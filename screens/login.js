@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik"; // Import Formik
 import { Octicons, Ionicons } from "@expo/vector-icons"; //Icons
@@ -29,7 +29,7 @@ import {
   Box,
 } from "../components/styles";
 
-import { View } from "react-native";
+import { View, Text } from "react-native";
 
 //colors
 const { darkLight } = Colors;
@@ -37,11 +37,49 @@ const { darkLight } = Colors;
 //keyboard avoiding wrapper
 import KeyboardAvoidingWrapper from "./../components/KeyboardAvoidingWrapper";
 
-//API client
-// import axios from 'axios';
+//firebase
+import { authentication } from "../firebase/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 
 const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  //text input states
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // State variable for error message
+  const [error, setError] = useState(null); 
+
+  useEffect(() => {
+    let timeoutId;
+    if (error) {
+      // Set a timeout to clear the error message after 3 seconds
+      timeoutId = setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
+    // Clear the timeout when the component unmounts or the error state changes
+    return () => clearTimeout(timeoutId);
+  }, [error]);
+
+
+  //authentication
+  const SignInUser = () => {
+    signInWithEmailAndPassword(authentication, email, password)
+      .then(() => {
+        setIsSignedIn(true);
+        navigation.navigate("HomeScreen");
+      })
+      .catch((error) => {
+        if (error.code === "auth/invalid-email") {
+          setError("Invalid Credentials");
+        } else {
+          setError("Invalid Credentials");
+          console.log(error);
+        }
+      });
+  }
   return (
     <KeyboardAvoidingWrapper>
       <StyledContainer>
@@ -61,34 +99,42 @@ const Login = ({ navigation }) => {
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
               <StyledFormArea>
+                  {/* Error message */}
+                  <View style={{ flex: 1, alignItems: "center", height: 36 }}>
+                    {error && <MsgBox style="text-center text-sm">{error}</MsgBox>}
+                  </View>
                 <MyTextInput
                   // label="Email Address"
                   icon="mail"
                   placeholder="Email Address"
                   placeholderTextColor={darkLight}
-                  onChangeText={handleChange("email")}
+                  // onChangeText={handleChange("email")}
+                  onChangeText={text=>setEmail(text)}
                   onBlurText={handleBlur("email")}
-                  value={values.email}
+                  value={email}
                   keyboardType="email-address"
+                  style={{ marginTop: -15 }}
                 />
                 <MyTextInput
                   // label="Password"
                   icon="lock"
                   placeholder="Enter Password"
                   placeholderTextColor={darkLight}
-                  onChangeText={handleChange("password")}
+                  // onChangeText={handleChange("password")}
+                  onChangeText={text=>setPassword(text)}
                   onBlurText={handleBlur("password")}
-                  value={values.password}
+                  value={password}
                   secureTextEntry={hidePassword}
                   isPassword={true}
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
+                  style={{ marginTop: -15 }}
                 />
                 <MsgBox>Forgot your password?</MsgBox>
-                <StyledButton onPress={handleSubmit}>
+                {}
+                <StyledButton onPress={SignInUser}>
                   <ButtonText>Login</ButtonText>
                 </StyledButton>
-                <Box> or </Box>
                 <GoogleButton onPress={handleSubmit}>
                   <GoogleImage
                     resizeMode="cover"
@@ -122,7 +168,7 @@ const MyTextInput = ({
   return (
     <View>
       <LeftIcon>
-        <Octicons name={icon} size={30} color="black" />
+        <Octicons name={icon} size={30} color="black" style={{ marginTop: -17 }} />
       </LeftIcon>
       <StyledInputLabel>{label}</StyledInputLabel>
       <StyledTextInput
@@ -136,6 +182,7 @@ const MyTextInput = ({
             name={hidePassword ? "md-eye-off" : "md-eye"}
             size={30}
             color={darkLight}
+            style={{ marginTop: -17 }}
           />
         </RightIcon>
       )}

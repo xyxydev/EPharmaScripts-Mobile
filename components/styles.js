@@ -76,7 +76,6 @@ export const PageTitle = styled.Text`
 export const Subtitle = styled.Text`
   font-size: 18px;
   text-align: center;
-  margin-bottom: 20px;
   letter-spacing: 1px;
   font-weight: bold;
   color: ${red};
@@ -95,7 +94,6 @@ export const StyledTextInput = styled.TextInput`
   font-size: 16px;
   height: 60px;
   margin-vertical: 3px;
-  margin-bottom: 10px;
   color: ${dark};
   border-width: 2px;
   border-color: black;

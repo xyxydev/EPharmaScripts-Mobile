@@ -10,12 +10,12 @@ git init
 git add README.md
 git commit -m "first commit"
 git branch -M main
-git remote add origin https://github.com/Tet-hub/e-pharmascripts.git
+git remote add origin https://github.com/Tet-hub/E-pharmascripts-frontend.git
 git push -u origin main
 
 //how to pull
 git init
-git remote add origin https://github.com/Tet-hub/e-pharmascripts.git //if you don't have origin yet
+git remote add origin https://github.com/Tet-hub/E-pharmascripts-frontend.git //if you don't have origin yet
 git fetch --all
 git reset --hard origin/main
 git pull origin main

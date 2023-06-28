@@ -33,6 +33,10 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 //keyboard avoiding wrapper
 import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 
+//firebase
+import { authentication } from "../firebase/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
 const Signup = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [show, setShow] = useState(false);
@@ -51,6 +55,27 @@ const Signup = ({ navigation }) => {
   const showDatePicker = () => {
     setShow(true);
   };
+    //text input states
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    //error message
+    const [error, setError] = useState(null);
+
+    // authentication
+    const RegisterUser = () => {
+      createUserWithEmailAndPassword(authentication, email, password)
+      .then((re) => {
+        console.log(re);
+        // Display success message
+        setError("Registered successfully!");
+      })
+      .catch((error) => {
+        console.log(error);
+        // Display error message
+        setError("Registration failed. Please try again.");
+      });
+    };
+
 
   return (
     <KeyboardAvoidingWrapper>
@@ -86,11 +111,16 @@ const Signup = ({ navigation }) => {
               }}
               onSubmit={(values) => {
                 console.log(values);
+                RegisterUser();
                 navigation.navigate("Login");
               }}
             >
-              {({ handleChange, handleBlur, handleSubmit, values }) => (
-                <StyledFormArea>
+              {({ handleChange, handleBlur, values }) => (
+                <StyledFormArea style={{ marginTop: 15 }}>
+                  {/* Error message */}
+                  <View style={{ flex: 1, alignItems: "center", height: 36 }}>
+                      {error && <MsgBox style="text-center text-sm">{error}</MsgBox>}
+                  </View>
                   <MyTextInput
                     icon="person"
                     //   label="Username"
@@ -99,6 +129,7 @@ const Signup = ({ navigation }) => {
                     onChangeText={handleChange("firstname")}
                     onBlur={handleBlur("firstname")}
                     value={values.firstname}
+                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="person-fill"
@@ -108,16 +139,19 @@ const Signup = ({ navigation }) => {
                     onChangeText={handleChange("lastname")}
                     onBlur={handleBlur("lastname")}
                     value={values.lastname}
+                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="mail"
                     //   label="Email Address"
                     placeholder="Email Address"
                     placeholderTextColor={darkLight}
-                    onChangeText={handleChange("email")}
+                    // onChangeText={handleChange("email")}
+                    onChangeText={text=>setEmail(text)}
                     onBlur={handleBlur("email")}
-                    value={values.email}
+                    value={email}
                     keyboardType="email-address"
+                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="device-mobile"
@@ -126,6 +160,7 @@ const Signup = ({ navigation }) => {
                     onChangeText={handleChange("phone")}
                     onBlur={handleBlur("phone")}
                     value={values.phone}
+                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="calendar"
@@ -138,20 +173,23 @@ const Signup = ({ navigation }) => {
                     isDate={true}
                     editable={false}
                     showDatePicker={showDatePicker}
-                    selectionColor="red" // Set selection color to red
+                    selectionColor="black" 
+                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="lock"
                     //   label="Password"
                     placeholder="Enter Password"
                     placeholderTextColor={darkLight}
-                    onChangeText={handleChange("password")}
+                    // onChangeText={handleChange("password")}
+                    onChangeText={text=>setPassword(text)}
                     onBlur={handleBlur("password")}
-                    value={values.password}
+                    value={password}
                     secureTextEntry={hidePassword}
                     isPassword={true}
                     hidePassword={hidePassword}
                     setHidePassword={setHidePassword}
+                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="lock"
@@ -165,9 +203,10 @@ const Signup = ({ navigation }) => {
                     isPassword={true}
                     hidePassword={hidePassword}
                     setHidePassword={setHidePassword}
+                    style={{ marginTop: -15 }}
                   />
-                  <StyledButton onPress={handleSubmit}>
-                    <ButtonText>Signup</ButtonText>
+                  <StyledButton onPress={RegisterUser} style={{ marginTop: 20 }}>
+                    <ButtonText >Signup</ButtonText>
                   </StyledButton>
                   <ExtraView>
                     <Extratext>Already have an account? </Extratext>
@@ -198,14 +237,15 @@ const MyTextInput = ({
   return (
     <View>
       <LeftIcon>
-        <Octicons name={icon} size={30} color="black" />
+        <Octicons name={icon} size={30} color="black" style={{ marginTop: -17 }}/>
       </LeftIcon>
       <StyledInputLabel>{label}</StyledInputLabel>
       {!isDate && (
         <StyledTextInput
           {...props}
           placeholderTextColor="black"
-          selectionColor="red"
+          selectionColor="black"
+      
         />
       )}
       {isDate && (
@@ -213,7 +253,7 @@ const MyTextInput = ({
           <StyledTextInput
             {...props}
             placeholderTextColor="black"
-            selectionColor="red"
+            selectionColor="black"
           />
         </TouchableOpacity>
       )}
@@ -223,6 +263,7 @@ const MyTextInput = ({
             name={hidePassword ? "md-eye-off" : "md-eye"}
             size={30}
             color={darkLight}
+            style={{ marginTop: -17 }}
           />
         </RightIcon>
       )}
