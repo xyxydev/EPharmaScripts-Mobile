@@ -2,6 +2,7 @@ import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import SwiperFlatList from "react-native-swiper-flatlist";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   View,
@@ -17,13 +18,20 @@ import {
 } from "react-native";
 import { styled } from "nativewind";
 
+import BranchesScreen from "../screens/BranchesScreen";
+
 const { width, height } = Dimensions.get("window");
 
 // Calculate the image dimensions based on screen size
 const imageWidth = width; // Adjust as needed
 const imageHeight = height * 0.25; // Adjust as needed
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+  const navigation = useNavigation();
+  const handleBranches = () => {
+    // Navigate to notification screen when TouchableOpacity of notification icon is pressed
+    navigation.navigate("BranchesScreen");
+  };
   return (
     <SafeAreaView className="flex-1">
       <ScrollView>
@@ -81,9 +89,11 @@ const HomeScreen = ({ navigation }) => {
             Pharmacy Selection
           </Text>
           <View className="flex flex-row flex-wrap">
-            <View className="w-1/2 p-2">
+            {/**Pharmacy containers code */}
+            <View className="w-1/2 p-2 ">
               <View
                 style={{
+                  height: 250,
                   backgroundColor: "#F4F4F4",
                   padding: 8,
                   shadowColor: "#000",
@@ -95,26 +105,41 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Image
                   source={require("../assets/img/cymer.jpg")}
-                  className="w-full h-32 object-cover rounded-t-lg"
+                  style={{
+                    width: "100%",
+                    height: 150,
+                    objectFit: "cover",
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                  }}
                 />
-                <Text className="text-center text-sm font-bold">
+                <Text className="text-center text-sm font-bold pt-4">
                   Three-Xymer Pharmacy
                 </Text>
                 <TouchableOpacity
-                  onPress={() =>
-                    Alert.alert(
-                      "temporarily using alert since Math doesn't exist"
-                    )
-                  }
-                  className="bg-red-500 flex flex-row items-center justify-center p-2 mt-2"
+                  onPress={handleBranches}
+                  style={{
+                    backgroundColor: "white",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 2,
+                    marginTop: 14,
+                    borderWidth: 1,
+                    borderColor: "#EF4444",
+                    width: 120,
+                    alignSelf: "center",
+                  }}
                 >
-                  <Text className="text-white text-xs">View Pharmacy</Text>
+                  <Text className="text-red-500 text-s">View Pharmacy</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="w-1/2 p-2">
+
+            <View className="w-1/2 p-2 ">
               <View
                 style={{
+                  height: 250,
                   backgroundColor: "#F4F4F4",
                   padding: 8,
                   shadowColor: "#000",
@@ -126,26 +151,41 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Image
                   source={require("../assets/img/cymer.jpg")}
-                  className="w-full h-32 object-cover rounded-t-lg"
+                  style={{
+                    width: "100%",
+                    height: 150,
+                    objectFit: "cover",
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                  }}
                 />
-                <Text className="text-center text-sm font-bold">
+                <Text className="text-center text-sm font-bold pt-4">
                   Three-Xymer Pharmacy
                 </Text>
                 <TouchableOpacity
-                  onPress={() =>
-                    Alert.alert(
-                      "temporarily using alert since Math doesn't exist"
-                    )
-                  }
-                  className="bg-red-500 flex flex-row items-center justify-center p-2 mt-2"
+                  onPress={handleBranches}
+                  style={{
+                    backgroundColor: "white",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 2,
+                    marginTop: 14,
+                    borderWidth: 1,
+                    borderColor: "#EF4444",
+                    width: 120,
+                    alignSelf: "center",
+                  }}
                 >
-                  <Text className="text-white text-xs">View Pharmacy</Text>
+                  <Text className="text-red-500 text-s">View Pharmacy</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="w-1/2 p-2">
+
+            <View className="w-1/2 p-2 ">
               <View
                 style={{
+                  height: 250,
                   backgroundColor: "#F4F4F4",
                   padding: 8,
                   shadowColor: "#000",
@@ -157,26 +197,41 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Image
                   source={require("../assets/img/cymer.jpg")}
-                  className="w-full h-32 object-cover rounded-t-lg"
+                  style={{
+                    width: "100%",
+                    height: 150,
+                    objectFit: "cover",
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                  }}
                 />
-                <Text className="text-center text-sm font-bold">
+                <Text className="text-center text-sm font-bold pt-4">
                   Three-Xymer Pharmacy
                 </Text>
                 <TouchableOpacity
-                  onPress={() =>
-                    Alert.alert(
-                      "temporarily using alert since Math doesn't exist"
-                    )
-                  }
-                  className="bg-red-500 flex flex-row items-center justify-center p-2 mt-2"
+                  onPress={handleBranches}
+                  style={{
+                    backgroundColor: "white",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 2,
+                    marginTop: 14,
+                    borderWidth: 1,
+                    borderColor: "#EF4444",
+                    width: 120,
+                    alignSelf: "center",
+                  }}
                 >
-                  <Text className="text-white text-xs">View Pharmacy</Text>
+                  <Text className="text-red-500 text-s">View Pharmacy</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="w-1/2 p-2">
+
+            <View className="w-1/2 p-2 ">
               <View
                 style={{
+                  height: 250,
                   backgroundColor: "#F4F4F4",
                   padding: 8,
                   shadowColor: "#000",
@@ -188,26 +243,41 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Image
                   source={require("../assets/img/cymer.jpg")}
-                  className="w-full h-32 object-cover rounded-t-lg"
+                  style={{
+                    width: "100%",
+                    height: 150,
+                    objectFit: "cover",
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                  }}
                 />
-                <Text className="text-center text-sm font-bold">
+                <Text className="text-center text-sm font-bold pt-4">
                   Three-Xymer Pharmacy
                 </Text>
                 <TouchableOpacity
-                  onPress={() =>
-                    Alert.alert(
-                      "temporarily using alert since Math doesn't exist"
-                    )
-                  }
-                  className="bg-red-500 flex flex-row items-center justify-center p-2 mt-2"
+                  onPress={handleBranches}
+                  style={{
+                    backgroundColor: "white",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 2,
+                    marginTop: 14,
+                    borderWidth: 1,
+                    borderColor: "#EF4444",
+                    width: 120,
+                    alignSelf: "center",
+                  }}
                 >
-                  <Text className="text-white text-xs">View Pharmacy</Text>
+                  <Text className="text-red-500 text-s">View Pharmacy</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="w-1/2 p-2">
+
+            <View className="w-1/2 p-2 ">
               <View
                 style={{
+                  height: 250,
                   backgroundColor: "#F4F4F4",
                   padding: 8,
                   shadowColor: "#000",
@@ -219,23 +289,37 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Image
                   source={require("../assets/img/cymer.jpg")}
-                  className="w-full h-32 object-cover rounded-t-lg"
+                  style={{
+                    width: "100%",
+                    height: 150,
+                    objectFit: "cover",
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                  }}
                 />
-                <Text className="text-center text-sm font-bold">
+                <Text className="text-black-100 text-center text-sm font-bold pt-4">
                   Three-Xymer Pharmacy
                 </Text>
                 <TouchableOpacity
-                  onPress={() =>
-                    Alert.alert(
-                      "temporarily using alert since Math doesn't exist"
-                    )
-                  }
-                  className="bg-red-500 flex flex-row items-center justify-center p-2 mt-2"
+                  onPress={handleBranches}
+                  style={{
+                    backgroundColor: "white",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 2,
+                    marginTop: 14,
+                    borderWidth: 1,
+                    borderColor: "#EF4444",
+                    width: 120,
+                    alignSelf: "center",
+                  }}
                 >
-                  <Text className="text-white text-xs">View Pharmacy</Text>
+                  <Text className="text-red-500 text-s">View Pharmacy</Text>
                 </TouchableOpacity>
               </View>
             </View>
+
             {/* Add more pharmacy selection items here */}
           </View>
         </View>
