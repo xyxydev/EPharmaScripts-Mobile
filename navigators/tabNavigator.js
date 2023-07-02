@@ -14,6 +14,7 @@ import NotificationScreen from "../screens/NotificationScreen";
 import MenuScreen from "../screens/MenuScreen";
 import DiaryMaintenanceScreen from "../screens/DiaryMaintenanceScreen";
 import ShoppingCartScreen from "../screens/ShoppingCartScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 import { Colors } from "../components/styles"; //import colors
 
@@ -44,6 +45,10 @@ const CustomHeaderTitle = () => {
     // Navigate to notification screen when TouchableOpacity of notification icon is pressed
     navigation.navigate('NotificationScreen');
   };
+  const handleProfilePress = () => {
+    // Navigate to profile screen when TouchableOpacity of profile icon is pressed
+    navigation.navigate('ProfileScreen');
+  };
 
   return (
     <View className="flex flex-row flex-wrap">
@@ -68,8 +73,8 @@ const CustomHeaderTitle = () => {
             size={26}
             color="red"
           />
-        </TouchableOpacity>      
-        <TouchableOpacity>
+        </TouchableOpacity> 
+        <TouchableOpacity onPress={handleProfilePress}>
           <View className="w-8 h-8 ml-5" style={{marginTop: -4}}>
             <View className="">
                 <Image

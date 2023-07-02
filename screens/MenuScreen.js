@@ -37,7 +37,7 @@ const MenuScreen = () => {
 
   const handleSettingsScreen = () => {
     // Navigate to settings screen
-    navigation.navigate("Settings"); //CURRENTLY NO SCREEN !
+    navigation.navigate("SettingsScreen");
   };
   
 
@@ -69,18 +69,6 @@ const MenuScreen = () => {
         </View>
         <View className="ml-5">
           <Text className="text-custom-red mr-5 text-xl">My Order</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={handleNotificationScreen}
-        className="bg-white rounded-lg flex flex-row p-2 m-1 "
-      >
-        <View className="ml-5  ">
-          <Ionicons name="notifications-outline" size={26} color="red" className="mr-4" />
-        </View>
-        <View className="ml-5">
-          <Text className="text-custom-red mr-5 text-xl">Notification</Text>
         </View>
       </TouchableOpacity>
 
