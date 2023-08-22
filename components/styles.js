@@ -16,6 +16,8 @@ export const Colors = {
   black: "#000000",
   dark: "#273B4A",
   gray: "#D9D9D9",
+  orange: "#EC6F56",
+  bodyGray: "#F5F5F5",
 };
 
 const {
@@ -29,20 +31,22 @@ const {
   black,
   dark,
   gray,
+  orange,
+  bodyGray,
 } = Colors;
 
 //register and login styles
 export const StyledContainer = styled.View`
   flex: 1;
-  padding: 25px;
-  padding-top: ${StatusBarHeight + 30}px;
+  padding: ${StatusBarHeight + 5}px 25px 25px 25px;
   background-color: ${primary};
 `;
 
 export const InnerContainer = styled.View`
   flex: 1;
   width: 100%;
-  allign-items: center;
+  align-items: center;
+  margin-top: 20px;
 `;
 
 export const PageLogo = styled.Image`
@@ -78,42 +82,33 @@ export const Subtitle = styled.Text`
   text-align: center;
   letter-spacing: 1px;
   font-weight: bold;
-  color: ${red};
+  color: ${dark};
 `;
 
 export const StyledFormArea = styled.View`
-  width: 98%;
+  width: 100%;
+  padding: 0 16px;
 `;
 
 export const StyledTextInput = styled.TextInput`
-  background-color: ${light};
-  padding: 15px;
-  padding-left: 55px;
-  padding-right: 55px;
-  border-radius: 5px;
+  background-color: ${primary};
+  padding-left: 30px;
+  border-radius: 18px;
   font-size: 16px;
-  height: 60px;
-  margin-vertical: 3px;
+  font-weight: 200;
+  height: 55px;
+  width: 100%;
   color: ${dark};
-  border-width: 2px;
-  border-color: black;
-`;
-
-export const StyledInputLabel = styled.Text`
-  color: ${dark};
-  font-size: 18px;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.2);
+  margin-left: 0;
   text-align: left;
+  margin-vertical: 8px;
 `;
 
-export const LeftIcon = styled.View`
-  left: 12px;
-  top: 42px;
-  position: absolute;
-  z-index: 1;
-`;
 
 export const RightIcon = styled.TouchableOpacity`
-  right: 12px;
+  right: 20px;
   top: 42px;
   position: absolute;
   z-index: 1;
@@ -121,18 +116,22 @@ export const RightIcon = styled.TouchableOpacity`
 
 export const StyledButton = styled.TouchableOpacity`
   padding: 15px;
-  background-color: ${red};
+  background-color: ${orange};
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 26px;
   margin-vertical: 5px;
-  height: 50px;
+  height: 60px;
+  width: 100%; /* Use a percentage of the screen width */
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export const ButtonText = styled.Text`
   color: ${primary};
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 600; /* Semi-bold font weight */
+  margin-top: -4px;
 `;
 
 
@@ -148,13 +147,14 @@ export const ExtraView = styled.View`
   flex-direction: row;
   align-items: center;
   padding: 10px;
+  margin-top: 30px;
 `;
 
 export const Extratext = styled.Text`
   justify-content: center;
   align-content: center;
   color: ${black};
-  font-size: 16px;
+  font-size: 17px;
 `;
 
 export const TextLink = styled.TouchableOpacity`
@@ -163,30 +163,36 @@ export const TextLink = styled.TouchableOpacity`
 `;
 
 export const TextLinkContent = styled.Text`
-  color: ${red};
-  font-size: 16px;
+  color: ${orange};
+  font-size: 17px;
+  font-weight: 700;
 `;
 
 //google
 export const GoogleButton = styled.TouchableOpacity`
   padding: 15px;
   background-color: ${gray};
-  border-radius: 5px;
+  border-radius: 23px;
   margin-vertical: 5px;
-  height: 50px;
   flex-direction: row;
+  height: 60px;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Align items vertically */
+  width: 100%; /* Use a percentage of the screen width */
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export const GoogleImage = styled.Image`
-  width: 20px;
-  height: 20px;
-  margin-right: 43px;
+  width: 10%;
+  height: 100%;
+  margin-right: 10px;
 `;
 
 export const GoogleText = styled.Text`
   color: ${dark};
+  font-weight: 400; /*Regular font weight*/
   font-size: 16px;
-  font-weight: bold;
 `;
 export const Box = styled.Text`
   text-align: center;
@@ -196,3 +202,4 @@ export const Box = styled.Text`
 `;
 
 //register login styles end
+

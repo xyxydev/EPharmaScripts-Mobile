@@ -7,7 +7,7 @@
     "icon": "./assets/img/EPS.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/img/eps-nobg.png",
+      "image": "./assets/img/ep-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/eps-nobg.png",
+        "foregroundImage": "./assets/img/ep-logo.png",
         "backgroundColor": "#ffffff"
       }
     },

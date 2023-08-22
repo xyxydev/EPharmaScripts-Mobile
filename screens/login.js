@@ -33,6 +33,7 @@ import { View, Text } from "react-native";
 
 //colors
 const { darkLight } = Colors;
+const { orange } = Colors;
 
 //keyboard avoiding wrapper
 import KeyboardAvoidingWrapper from "./../components/KeyboardAvoidingWrapper";
@@ -87,9 +88,10 @@ const Login = ({ navigation }) => {
         <InnerContainer>
           <PageLogo
             resizeMode="cover"
-            source={require("../assets/img/e-logo.png")}
+            source={require("../assets/img/ep-logo.png")}
           />
           <Subtitle>Welcome to E-Pharmascripts</Subtitle>
+          
           <Formik
             initialValues={{ email: "", password: "" }}
             onSubmit={(values) => {
@@ -104,9 +106,7 @@ const Login = ({ navigation }) => {
                     {error && <MsgBox style="text-center text-sm">{error}</MsgBox>}
                   </View>
                 <MyTextInput
-                  // label="Email Address"
-                  icon="mail"
-                  placeholder="Email Address"
+                  placeholder="Email"
                   placeholderTextColor={darkLight}
                   // onChangeText={handleChange("email")}
                   onChangeText={text=>setEmail(text)}
@@ -116,9 +116,7 @@ const Login = ({ navigation }) => {
                   style={{ marginTop: -15 }}
                 />
                 <MyTextInput
-                  // label="Password"
-                  icon="lock"
-                  placeholder="Enter Password"
+                  placeholder="Password"
                   placeholderTextColor={darkLight}
                   // onChangeText={handleChange("password")}
                   onChangeText={text=>setPassword(text)}
@@ -130,11 +128,13 @@ const Login = ({ navigation }) => {
                   setHidePassword={setHidePassword}
                   style={{ marginTop: -15 }}
                 />
-                <MsgBox>Forgot your password?</MsgBox>
+                <MsgBox style={{ marginTop: 3, marginBottom: 10 }}>Forgot password?</MsgBox>
                 {}
                 <StyledButton onPress={SignInUser}>
                   <ButtonText>Login</ButtonText>
                 </StyledButton>
+                <Text className="text-center" style={{fontSize: 16, fontWeight: 400,  marginTop: 8, marginBottom: 8 }}>or</Text>
+
                 <GoogleButton onPress={handleSubmit}>
                   <GoogleImage
                     resizeMode="cover"
@@ -142,10 +142,11 @@ const Login = ({ navigation }) => {
                   />
                   <GoogleText>Continue with Google</GoogleText>
                 </GoogleButton>
+
                 <ExtraView>
-                  <Extratext>Don't have an account? </Extratext>
+                  <Extratext>No account?</Extratext>
                   <TextLink onPress={() => navigation.navigate("Signup")}>
-                    <TextLinkContent>Register now</TextLinkContent>
+                    <TextLinkContent> Sign up</TextLinkContent>
                   </TextLink>
                 </ExtraView>
               </StyledFormArea>
@@ -167,22 +168,21 @@ const MyTextInput = ({
 }) => {
   return (
     <View>
-      <LeftIcon>
-        <Octicons name={icon} size={30} color="black" style={{ marginTop: -17 }} />
-      </LeftIcon>
-      <StyledInputLabel>{label}</StyledInputLabel>
       <StyledTextInput
         {...props}
         placeholderTextColor="black"
-        selectionColor="red" // Set the caret color to red
+        selectionColor={orange} // Set the caret color to red
+        style={{
+          textAlign: 'left',
+        }}
       />
       {isPassword && (
         <RightIcon onPress={() => setHidePassword(!hidePassword)}>
           <Ionicons
             name={hidePassword ? "md-eye-off" : "md-eye"}
-            size={30}
+            size={23}
             color={darkLight}
-            style={{ marginTop: -17 }}
+            style={{ marginTop: -17}}
           />
         </RightIcon>
       )}

@@ -18,6 +18,9 @@ import TabNavigator from "./tabNavigator"; //import TabNavigator
 import NotificationScreen from "../screens/NotificationScreen"; // ----------new
 import SettingsScreen from "../screens/SettingsScreen"; // ----------new
 import BranchesScreen from "../screens/BranchesScreen";
+import TermsConditions from "../screens/TermsConditions";
+import EditProfileScreen from "../screens/EditProfileScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 import { Colors } from "../components/styles"; //import colors
 
@@ -25,12 +28,33 @@ import Icon from "react-native-vector-icons/MaterialIcons"; //icons
 
 //tailwind
 import { TailwindProvider } from "tailwindcss-react-native";
-import ProfileScreen from "../screens/ProfileScreen";
 
 //statusbar state
 import { useIsFocused } from "@react-navigation/native";
 
-const { tertiary, white, red } = Colors;
+const { tertiary, white, red, bodyGray } = Colors;
+const styles = StyleSheet.create({
+  saveButton:{
+    backgroundColor: 'black',
+    color: 'white',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 20,
+    fontWeight: 600,
+    fontSize: 16,
+    marginRight: 20
+  },
+  headerTitle:{
+    marginLeft: -18, 
+    marginBottom: 2 
+  },
+  headerBackground:{
+    flex: 1, 
+    backgroundColor: bodyGray,
+  }
+});
 
 const Stack = createStackNavigator();
 
@@ -46,6 +70,13 @@ const RootStack = () => {
         }}
         initialRouteName="Login"
       >
+        <Stack.Screen
+          name="TermsConditions"
+          component={TermsConditions}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="Login"
           component={Login}
@@ -108,14 +139,14 @@ const RootStack = () => {
           options={{
             headerTitle: () => (
               <View style={{ marginLeft: -18, marginBottom: 2 }}>
-                <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold'}}>Profile</Text>
+  
               </View>
             ),
             headerBackground: () => (
-              <View style={{ flex: 1, backgroundColor: red }}>
+              <View style={{ flex: 1, backgroundColor: bodyGray}}>
               </View>
             ),
-            headerTintColor: 'white', 
+            headerTintColor: 'black', //back button
           }}
         />
         
@@ -138,6 +169,30 @@ const RootStack = () => {
             headerTintColor: "white",
           }}
         />
+
+        <Stack.Screen
+        name="EditProfileScreen"
+        component={EditProfileScreen}
+        options={({ navigation }) => ({
+          headerTitle: () => (
+            <View style={styles.headerTitle}>
+            </View>
+          ),
+          headerBackground: () => (
+            <View style={styles.headerBackground}></View>
+          ),
+          headerTintColor: 'black', // Back button color
+          headerRight: () => (
+            <TouchableOpacity onPress={() => {
+                // Handle the save action here
+              }}
+            >
+              <Text style={styles.saveButton}>SAVE</Text>
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      
       </Stack.Navigator>
     </TailwindProvider>
   );

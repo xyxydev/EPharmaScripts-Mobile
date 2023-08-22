@@ -11,6 +11,7 @@ module.exports = {
     extend: {
       colors: {
         "custom-red": "#E92929",
+        "custom-orange": "#EC6F56",
       },
       fontFamily: {
         sans: ["Montserrat", "sans-serif"],

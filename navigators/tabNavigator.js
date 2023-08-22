@@ -14,7 +14,6 @@ import NotificationScreen from "../screens/NotificationScreen";
 import MenuScreen from "../screens/MenuScreen";
 import DiaryMaintenanceScreen from "../screens/DiaryMaintenanceScreen";
 import ShoppingCartScreen from "../screens/ShoppingCartScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 
 import { Colors } from "../components/styles"; //import colors
 
@@ -48,6 +47,10 @@ const CustomHeaderTitle = () => {
   const handleProfilePress = () => {
     // Navigate to profile screen when TouchableOpacity of profile icon is pressed
     navigation.navigate('ProfileScreen');
+  };
+  const handleEditProfilePress = () => {
+    // Navigate to edit profile screen when TouchableOpacity of edit profile button is pressed
+    navigation.navigate('EditProfileScreen');
   };
 
   return (

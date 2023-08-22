@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import { Checkbox } from "expo-checkbox";
 import { Formik } from "formik";
 import { Octicons, Ionicons } from "@expo/vector-icons";
-import { ScrollView, View, TouchableOpacity, TextInput } from "react-native";
+import { ScrollView, View, TouchableOpacity, TextInput, Text } from "react-native";
 import {
   StyledContainer,
   InnerContainer,
@@ -26,7 +27,7 @@ import {
 
 //colors
 const { darkLight } = Colors;
-
+const { orange } = Colors;
 //date-time picker
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -42,6 +43,8 @@ const Signup = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date(2000, 0, 1));
+  // State for the checkbox
+  const [isChecked, setIsChecked] = useState(false); 
 
   //actual date of birth to be sent
   const [dob, setDob] = useState();
@@ -97,7 +100,11 @@ const Signup = ({ navigation }) => {
 
     const userData = {};
     
-
+    //check if terms and conditions is checked
+    if (!isChecked) {
+      setError('Please agree to the Terms & Conditions');
+      return;
+    }
     // Check if email already exists
     const usersRef = collection(db, 'users');
     const emailExistsQuery = query(usersRef, where('email', '==', userEmail));
@@ -181,6 +188,7 @@ const Signup = ({ navigation }) => {
       console.error('Error adding user:', error);
       setError('Error adding user');
     }
+
   };
 
   return (
@@ -193,7 +201,10 @@ const Signup = ({ navigation }) => {
               resizeMode="cover"
               source={require("../assets/img/e-logo.png")}
             /> */}
-            <Subtitle>Welcome to E-PharmaScripts</Subtitle>
+            <Subtitle style={{ marginTop: 20, marginBottom: 5 }}>Welcome to E-PharmaScripts</Subtitle>
+              <View style={{ flex: 1, alignItems: "center"}}>
+                {error && <MsgBox style={{ marginBottom: -15}}>{error}</MsgBox>}
+              </View>
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
@@ -232,7 +243,6 @@ const Signup = ({ navigation }) => {
                     onChangeText={text=>setFName(text)}
                     onBlur={handleBlur("firstname")}
                     value={firstName}
-                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="person-fill"
@@ -243,19 +253,17 @@ const Signup = ({ navigation }) => {
                     onChangeText={text=>setLName(text)}
                     onBlur={handleBlur("lastname")}
                     value={lastName}
-                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="mail"
                     //   label="Email Address"
-                    placeholder="Email Address"
+                    placeholder="Email"
                     placeholderTextColor={darkLight}
                     // onChangeText={handleChange("email")}
                     onChangeText={email=>setEmail(email)}
                     onBlur={handleBlur("email")}
                     value={email}
                     keyboardType="email-address"
-                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="device-mobile"
@@ -265,7 +273,6 @@ const Signup = ({ navigation }) => {
                     onChangeText={number=>setPhone(number)}
                     onBlur={handleBlur("phone")}
                     value={phone}
-                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="calendar"
@@ -279,7 +286,6 @@ const Signup = ({ navigation }) => {
                     editable={false}
                     showDatePicker={showDatePicker}
                     selectionColor="black" 
-                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="lock"
@@ -294,7 +300,6 @@ const Signup = ({ navigation }) => {
                     isPassword={true}
                     hidePassword={hidePassword}
                     setHidePassword={setHidePassword}
-                    style={{ marginTop: -15 }}
                   />
                   <MyTextInput
                     icon="lock"
@@ -309,21 +314,25 @@ const Signup = ({ navigation }) => {
                     isPassword={true}
                     hidePassword={hidePassword}
                     setHidePassword={setHidePassword}
-                    style={{ marginTop: -15 }}
                   />
+                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10, }}>
+                    <Checkbox color={orange} value={isChecked} onValueChange={setIsChecked} />
+                    <Text style={{ marginLeft: 5, fontSize: 14}}>I agree to the </Text>
+                    <TextLink onPress={() => navigation.navigate("TermsConditions")}>
+                      <TextLinkContent style={{ fontSize: 14, textDecorationLine: 'underline'}}>Terms & Conditions</TextLinkContent>
+                    </TextLink>
+                  </View>
+
                   <StyledButton onPress={RegisterUser} style={{ marginTop: 20 }}>
                     <ButtonText >Register</ButtonText>
                   </StyledButton>
                   <ExtraView>
                     <Extratext>Already have an account? </Extratext>
                     <TextLink onPress={() => navigation.navigate("Login")}>
-                      <TextLinkContent>Login here</TextLinkContent>
+                      <TextLinkContent>Login</TextLinkContent>
                     </TextLink>
                   </ExtraView>
                   {/* Error message */}
-                  <View style={{ flex: 1, alignItems: "center", height: 55 }}>
-                      {error && <MsgBox style="text-center text-sm">{error}</MsgBox>}
-                  </View>
                 </StyledFormArea>
               )}
             </Formik>
@@ -346,15 +355,11 @@ const MyTextInput = ({
 }) => {
   return (
     <View>
-      <LeftIcon>
-        <Octicons name={icon} size={30} color="black" style={{ marginTop: -17 }}/>
-      </LeftIcon>
-      <StyledInputLabel>{label}</StyledInputLabel>
       {!isDate && (
         <StyledTextInput
           {...props}
           placeholderTextColor="black"
-          selectionColor="black"
+          selectionColor={orange} // Set the caret color to red
       
         />
       )}
@@ -371,7 +376,7 @@ const MyTextInput = ({
         <RightIcon onPress={() => setHidePassword(!hidePassword)}>
           <Ionicons
             name={hidePassword ? "md-eye-off" : "md-eye"}
-            size={30}
+            size={23}
             color={darkLight}
             style={{ marginTop: -17 }}
           />
