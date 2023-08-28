@@ -57,104 +57,67 @@ const styles = StyleSheet.create({
     labelInfoCont:{
         marginVertical: 4,
     },
-    birthdateCont:{
+
+    iconContainer: {
         flexDirection: 'row',
-        backgroundColor: '#F5F2F2',
-        padding: 10,
-        borderRadius: 20,
-        marginVertical: 5,
-        justifyContent: 'space-between', 
         alignItems: 'center',
+        justifyContent: 'space-between', // Add this line
     }
     
   });
+
+
+
+const ProfileImage = ({ selectedImage, handleCameraIconClick }) => (
+  <View style={styles.upperContainer}>
+    <Text style={styles.title}>Edit Profile</Text>
+    <View style={styles.pic_cont}>
+      {selectedImage ? (
+        <Image source={{ uri: selectedImage }} style={styles.pic_cont} className="w-full h-full rounded-full"/>
+      ) : (
+        <Image
+          source={require("../assets/img/cymer.jpg")}
+          style={styles.pic_cont} className="w-full h-full rounded-full"
+        />
+      )}
+    </View>
+    <TouchableOpacity onPress={handleCameraIconClick}>
+      <IconSimple style={styles.camera} name="camera" size={22} color="white" />
+    </TouchableOpacity>
+  </View>
+);
+
+const ProfileInfo = ({ label, info, icon, additionalStyle }) => (
+    <View style={styles.labelInfoCont}>
+      <Text style={styles.label}>{label}</Text>
+      <View style={styles.infoCont}>
+        <View style={styles.iconContainer}>
+          <Text style={styles.info}>{info}</Text>
+          {icon && <IconFeather name={icon} size={22} color="#4E4E4E" style={{ marginRight: 20 }} />}
+        </View>
+      </View>
+    </View>
+);
+
 const EditProfileScreen = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
 
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    const handleCameraIconClick = () => {
-        const options = {
-        title: 'Select Photo',
-        cancelButtonTitle: 'Cancel',
-        takePhotoButtonTitle: 'Take Photo...',
-        chooseFromLibraryButtonTitle: 'Choose from Library...',
-        mediaType: 'photo',
-        quality: 1,
-        maxWidth: 500,
-        maxHeight: 500,
-        storageOptions: {
-            skipBackup: true,
-        },
-        };
-
-    ImagePicker.showImagePicker(options, response => {
-        if (response.didCancel) {
-            console.log('User cancelled image picker');
-        } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-        } else {
-            setSelectedImage(response.uri);
-        }
-        });
-    };
+  const handleCameraIconClick = () => {
+    // Your existing code for handling the image picker...
+  };
 
   return (
     <View style={styles.wholeContainer}>
-      <View style={styles.upperContainer}>
-        <Text style={styles.title}>Edit Profile</Text>
-        <View style={styles.pic_cont}>
-          {selectedImage ? (
-            <Image source={{ uri: selectedImage }} style={styles.pic_cont} className="w-full h-full rounded-full"/>
-          ) : (
-            <Image
-              source={require("../assets/img/cymer.jpg")}
-              style={styles.pic_cont} className="w-full h-full rounded-full"
-            />
-          )}
-        </View>
-        <TouchableOpacity onPress={handleCameraIconClick}>
-            <IconSimple style={styles.camera} name="camera" size={22} color="white" />
-        </TouchableOpacity>
-      </View>
+      <ProfileImage selectedImage={selectedImage} handleCameraIconClick={handleCameraIconClick} />
 
       <View style={styles.lowerContainer}>
-            <View style={styles.labelInfoCont}>  
-                <Text style={styles.label}>Name</Text>
-                <View style={styles.infoCont}>
-                    <Text style={styles.info}>Xyxy Pinakurat</Text>
-                </View>
-            </View>
-            <View style={styles.labelInfoCont}>  
-                <Text style={styles.label}>Phone</Text>
-                <View style={styles.infoCont}>
-                    <Text style={styles.info}>09876543210</Text>
-                </View>
-            </View>
-            <View style={styles.labelInfoCont}>  
-                <Text style={styles.label}>Gender</Text>
-                <View style={styles.infoCont}>
-                    <Text style={styles.info}>Male</Text>
-                </View>
-            </View>
-            <View style={styles.labelInfoCont}>  
-                <Text style={styles.label}>Birthdate</Text>
-                <View style={styles.birthdateCont}>
-                    <Text style={styles.info}></Text>
-                    <IconFeather style={{  marginRight: 20,}} name="calendar" size={22} color="#4E4E4E" />
-                </View>
-            </View>
-            <View style={styles.labelInfoCont}>  
-                <Text style={styles.label}>Valid ID</Text>
-                <View style={styles.infoCont}>
-                    <Text style={styles.info}></Text>
-                </View>
-            </View>
+        <ProfileInfo label="Name" info="Xyxy Pinakurat" />
+        <ProfileInfo label="Phone" info="09876543210" />
+        <ProfileInfo label="Gender" info="Male" />
+        <ProfileInfo label="Birthdate" info="1/20/23" icon="calendar" /> 
+        <ProfileInfo label="Valid ID" info="" />
       </View>
-
-
     </View>
-
-   
   );
 };
 

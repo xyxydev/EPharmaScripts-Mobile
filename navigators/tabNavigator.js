@@ -1,17 +1,12 @@
 import React from "react";
-import { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Icon from "react-native-vector-icons/MaterialIcons"; //icon
-import Ionicons from "react-native-vector-icons/Ionicons";
-
+import { Iconify } from "react-native-iconify";
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 //screns
 import HomeScreen from "../screens/HomeScreen";
 import MessageScreen from "../screens/MessageScreen";
-import NotificationScreen from "../screens/NotificationScreen";
-import MenuScreen from "../screens/MenuScreen";
 import DiaryMaintenanceScreen from "../screens/DiaryMaintenanceScreen";
 import ShoppingCartScreen from "../screens/ShoppingCartScreen";
 
@@ -29,13 +24,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 15,
   },
-  tabBarUnderline: {
-    position: "absolute",
-    bottom: -6,
-    height: 2,
-    width: "44%",
-    backgroundColor: "red", // Set the underline color to red
-  },
 });
 
 const CustomHeaderTitle = () => {  
@@ -49,34 +37,30 @@ const CustomHeaderTitle = () => {
     navigation.navigate('ProfileScreen');
   };
   const handleEditProfilePress = () => {
-    // Navigate to edit profile screen when TouchableOpacity of edit profile button is pressed
+    // Navigate to edit profile screen when TouchableOpacity of edit profile button is pressed ion:notifications
     navigation.navigate('EditProfileScreen');
+  };
+  const handleMenuPress = () => {
+    // Navigate to edit profile screen when TouchableOpacity of edit profile button is pressed
+    navigation.navigate('MenuScreen');
   };
 
   return (
     <View className="flex flex-row flex-wrap">
-      <View className="w-1/2 pl-1 flex flex-row items-center">
-        <Image
-          source={require("../assets/img/EPS.png")}
-          style={{ width: 39, height: 30 }}
-        />
-        <Text className="text-red-500 text-lg font-semibold">
-          E-Pharmascripts
-        </Text>
-      </View>
-      <View className="w-1/2 pt-1 flex-row flex-wrap justify-end">
-        <TouchableOpacity>
-          <View className="mr-5">
-            <Icon name="search" size={26} color="red" />
+
+      <View className="w-1/2 flex flex-row items-center">
+        <TouchableOpacity onPress={handleMenuPress}>
+          <View>
+            <Iconify icon="heroicons-outline:menu-alt-2" size={24} color="black" />
           </View>
-        </TouchableOpacity>            
+        </TouchableOpacity>  
+      </View>
+
+      <View className="w-1/2 flex-row flex-wrap justify-end">    
         <TouchableOpacity onPress={handleNotificationPress}>
-          <Ionicons
-            name="notifications-outline"
-            size={26}
-            color="red"
-          />
+        <Iconify icon="ion:notifications" size={24} color="#EC6F56" />
         </TouchableOpacity> 
+
         <TouchableOpacity onPress={handleProfilePress}>
           <View className="w-8 h-8 ml-5" style={{marginTop: -4}}>
             <View className="">
@@ -89,7 +73,9 @@ const CustomHeaderTitle = () => {
         </TouchableOpacity>
       </View>
     </View>
-  );
+
+
+    );
 };
 
 const TabNavigator = () => {
@@ -98,12 +84,20 @@ const TabNavigator = () => {
       screenOptions={{
         keyboardHidesTabBar: true,
         tabBarStyle: {
-          height: 55, // Increase the height of the tab bar
+          height: 58, // Increase the height of the tab bar
           borderRadius: 15,
-          padding: 10,
+          padding: 15,
           marginBottom: 15,
           marginLeft: 15,
           marginRight: 15,
+          elevation: 2, // This property controls the shadow on Android
+          shadowColor: '#000', // Set the shadow color
+          shadowOpacity: 0.3, // Set the shadow opacity
+          shadowRadius: 5, // Set the shadow radius
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
         },
       }}
       >
@@ -112,18 +106,15 @@ const TabNavigator = () => {
         component={HomeScreen}
         options={{
           headerTitle: () => <CustomHeaderTitle />,
+          headerStyle: {
+            backgroundColor: '#F5F5F5',
+          },
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>
-              <Ionicons
-                name="home"
-                color={color}
-                size={focused ? 30 : 27} // Increase the size when focused
-              />
-              {focused && <View style={styles.tabBarUnderline} />}
+              <Iconify icon="iconamoon:home-light" size={focused ? 30 : 27}  color={focused ? "#EC6F56" : "#8E8E8E"} />
             </View>
           ),
-          tabBarActiveTintColor: red, // Set the active tab color to red
         }}
       />
       <Tab.Screen
@@ -134,16 +125,9 @@ const TabNavigator = () => {
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>
-              <Icon
-                name="shopping-cart"
-                color={color}
-                size={focused ? 30 : 27} // Increase the size when focused
-              />
-              {focused && <View style={styles.tabBarUnderline} />}
+              <Iconify icon="ion:cart-outline" size={focused ? 30 : 29}  color={focused ? "#EC6F56" : "#8E8E8E"} />
             </View>
           ),
-          tabBarActiveTintColor: red, // Set the active tab color to red
-          backgroundColor: "transparent", // Set the background color of the tab bar to transparent
         }}
       />
       <Tab.Screen
@@ -154,15 +138,9 @@ const TabNavigator = () => {
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>
-              <Icon
-                name="auto-stories"
-                color={color}
-                size={focused ? 30 : 27} // Increase the size when focused
-              />
-              {focused && <View style={styles.tabBarUnderline} />}
+              <Iconify icon="solar:notebook-outline" size={focused ? 30 : 27}  color={focused ? "#EC6F56" : "#8E8E8E"} />
             </View>
           ),
-          tabBarActiveTintColor: red, // Set the active tab color to red
         }}
       />
       <Tab.Screen
@@ -178,44 +156,9 @@ const TabNavigator = () => {
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>
-              <Ionicons
-                name="chatbubble-ellipses-outline"
-                color={color}
-                size={focused ? 30 : 27} // Increase the size when focused
-              />
-              {focused && <View style={styles.tabBarUnderline} />}
+              <Iconify icon="ant-design:message-outlined" size={focused ? 30 : 27}  color={focused ? "#EC6F56" : "#8E8E8E"} />
             </View>
           ),
-          tabBarActiveTintColor: red, // Set the active tab color to red
-        }}
-      />
-      <Tab.Screen
-        name="Menu"
-        component={MenuScreen}
-        options={{
-          headerTitle: () => <CustomHeaderTitle />,
-          tabBarLabel: "",
-          tabBarIcon: ({ color, size, focused }) => (
-            <View>
-              <Icon
-                name="menu"
-                color={color}
-                size={focused ? 30 : 27} // Increase the size when focused
-              />
-              {focused && <View style={styles.tabBarUnderline} />}
-            </View>
-          ),
-          tabBarActiveTintColor: red, // Set the active tab color to red
-        }}
-      />
-      <Tab.Screen
-        name="Notification"
-        component={NotificationScreen}
-        options={{
-          headerTitle: () => <CustomHeaderTitle />, // Keep the header title visible
-          tabBarLabel: "",
-          tabBarButton: () => null, // Hide the entire tab button (icon and gap)
-          headerShown: true, // Show the header
         }}
       />
     </Tab.Navigator>

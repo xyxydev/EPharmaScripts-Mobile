@@ -21,6 +21,7 @@ import BranchesScreen from "../screens/BranchesScreen";
 import TermsConditions from "../screens/TermsConditions";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import MenuScreen from "../screens/MenuScreen";
 
 import { Colors } from "../components/styles"; //import colors
 
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
   },
   headerBackground:{
     flex: 1, 
-    backgroundColor: bodyGray,
+    backgroundColor: 'red',
   }
 });
 
@@ -64,12 +65,26 @@ const RootStack = () => {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor: white,
+            backgroundColor:'red',
           },
           headerTintColor: tertiary,
         }}
         initialRouteName="Login"
       >
+        <Stack.Screen
+          name="MenuScreen"
+          component={MenuScreen}
+          options={({ navigation }) => ({
+            headerTitle: () => (
+              <View style={styles.headerTitle}>
+              </View>
+            ),
+            headerBackground: () => (
+              <View style={{ flex: 1, backgroundColor: '#F5F5F5' }}></View>
+            ),
+            headerTintColor: 'black', // Back button color
+          })}
+        />
         <Stack.Screen
           name="TermsConditions"
           component={TermsConditions}
@@ -110,7 +125,7 @@ const RootStack = () => {
               </View>
             ),
             headerBackground: () => (
-              <View style={{ flex: 1, backgroundColor: red }}></View>
+              <View style={{ flex: 1, backgroundColor: white }}></View>
             ),
             headerTintColor: "white",
           }}
