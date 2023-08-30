@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import IconSimple from "react-native-vector-icons/SimpleLineIcons";
-import IconFeather from "react-native-vector-icons/Feather";
+import { Iconify } from "react-native-iconify";
 import ImagePicker from 'react-native-image-picker';
 
 
@@ -93,7 +93,7 @@ const ProfileInfo = ({ label, info, icon, additionalStyle }) => (
       <View style={styles.infoCont}>
         <View style={styles.iconContainer}>
           <Text style={styles.info}>{info}</Text>
-          {icon && <IconFeather name={icon} size={22} color="#4E4E4E" style={{ marginRight: 20 }} />}
+          {icon && <Iconify size={22} icon="mi:calendar" color="#4E4E4E" style={{ marginRight: 20 }}/>}
         </View>
       </View>
     </View>

@@ -56,7 +56,7 @@ const CustomHeaderTitle = () => {
         </TouchableOpacity>  
       </View>
 
-      <View className="w-1/2 flex-row flex-wrap justify-end">    
+      <View className="w-1/2 mt-2 flex-row flex-wrap justify-end">    
         <TouchableOpacity onPress={handleNotificationPress}>
         <Iconify icon="ion:notifications" size={24} color="#EC6F56" />
         </TouchableOpacity> 

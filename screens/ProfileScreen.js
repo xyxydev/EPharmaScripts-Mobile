@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, StatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import IconCI from "react-native-vector-icons/MaterialCommunityIcons";
+import { Iconify } from "react-native-iconify";
 import { Colors} from "../components/styles";
 
 
@@ -103,8 +102,6 @@ const styles = StyleSheet.create({
   },
   iconsBG: {
     backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    padding: 8,
     marginLeft: 25,
   }
 });
@@ -146,33 +143,34 @@ const ProfileScreen = () => {
 
             <TouchableOpacity onPress>
               <View style={styles.viewCont}> 
-                <Icon style={styles.iconsBG} name="logout" size={22} color="black" />
+                <Iconify style={styles.iconsBG} icon="codicon:account" size={22} color="black" />
                 <Text style={styles.viewContText}>My Account</Text>
-                <IconCI style={{  marginLeft: 155}} name="greater-than" size={22} color="black" />
+                <Iconify style={{  marginLeft: 155}} icon="iconoir:nav-arrow-right" size={22} color="black" />
+                
               </View>
             </TouchableOpacity>
           
             <TouchableOpacity onPress>
               <View style={styles.viewCont}> 
-                <Icon style={styles.iconsBG} name="logout" size={22} color="black" />
+                <Iconify style={styles.iconsBG} icon="ion:location-outline" size={22} color="black" />
                 <Text style={styles.viewContText}>My Address</Text>
-                <IconCI style={{  marginLeft: 155}} name="greater-than" size={22} color="black" />
+                <Iconify style={{  marginLeft: 155}} icon="iconoir:nav-arrow-right" size={22} color="black" />
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress>
               <View style={styles.viewCont}> 
-                <Icon style={styles.iconsBG} name="logout" size={22} color="black" />
+                <Iconify style={styles.iconsBG} icon="mdi:security-lock-outline" size={22} color="black" />
                 <Text style={styles.viewContText}>Password and Security</Text>
-                <IconCI style={{  marginLeft: 74}} name="greater-than" size={22} color="black" />
+                <Iconify style={{  marginLeft: 75}} icon="iconoir:nav-arrow-right" size={22} color="black" />
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress>
               <View style={styles.viewCont}> 
-                <Icon style={styles.iconsBG} name="logout" size={22} color="black" />
+                <Iconify style={styles.iconsBG} icon="iconamoon:notification" size={22} color="black" />
                 <Text style={styles.viewContText}>Notifications</Text>
-                <IconCI style={{  marginLeft: 148}} name="greater-than" size={22} color="black" />
+                <Iconify style={{  marginLeft: 150}} icon="iconoir:nav-arrow-right" size={22} color="black" />
               </View>
             </TouchableOpacity>
 
@@ -180,9 +178,9 @@ const ProfileScreen = () => {
 
             <TouchableOpacity onPress>
               <View style={styles.viewCont} className="mt-2"> 
-                <Icon style={styles.iconsBG} name="logout" size={22} color="black" />
+                <Iconify style={styles.iconsBG} icon="ic:outline-delete" size={22} color="black" />
                 <Text style={styles.viewContText}>Delete Account</Text>
-                <IconCI style={{  marginLeft: 130}} name="greater-than" size={22} color="black" />
+                <Iconify style={{  marginLeft: 130}} icon="iconoir:nav-arrow-right" size={22} color="black" />
               </View>
             </TouchableOpacity>
 

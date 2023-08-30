@@ -60,7 +60,7 @@ const HomeScreen = () => {
         <View className="pl-4 pr-4 pb-2">
           <StatusBar backgroundColor="white" barStyle="light-content" />
             <View style={{ marginTop: 13,marginBottom: 5,}}>
-              <Text style={{ color: 'black', fontSize: 25, fontWeight: 600, marginLeft: 2,}}>E-
+              <Text style={{ color: 'black', fontSize: 22, fontWeight: 600, marginLeft: 2,}}>E-
               <Text style={{color: '#EC6F56'}}> PharmaScripts</Text></Text>
             </View>
             <View style={styles.searchFilterCont}>

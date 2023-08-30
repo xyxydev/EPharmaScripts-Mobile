@@ -38,22 +38,22 @@ const styles = StyleSheet.create({
   saveButton:{
     backgroundColor: 'black',
     color: 'white',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 20,
+    paddingRight: 20,
     borderRadius: 20,
     fontWeight: 600,
-    fontSize: 16,
+    fontSize: 14,
     marginRight: 20
   },
-  headerTitle:{
+  headerTITLE:{
     marginLeft: -18, 
     marginBottom: 2 
   },
-  headerBackground:{
+  headBG:{
     flex: 1, 
-    backgroundColor: 'red',
+    backgroundColor: '#F5F5F5',
   }
 });
 
@@ -65,7 +65,7 @@ const RootStack = () => {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor:'red',
+            backgroundColor:'#F5F5F5',
           },
           headerTintColor: tertiary,
         }}
@@ -76,7 +76,7 @@ const RootStack = () => {
           component={MenuScreen}
           options={({ navigation }) => ({
             headerTitle: () => (
-              <View style={styles.headerTitle}>
+              <View style={styles.headerTITLE}>
               </View>
             ),
             headerBackground: () => (
@@ -116,18 +116,9 @@ const RootStack = () => {
           component={NotificationScreen}
           options={{
             headerTitle: () => (
-              <View style={{ marginLeft: -18, marginBottom: 2 }}>
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
-                >
-                  Notifications
-                </Text>
-              </View>
+              <View></View>
             ),
-            headerBackground: () => (
-              <View style={{ flex: 1, backgroundColor: white }}></View>
-            ),
-            headerTintColor: "white",
+            headerTintColor: "black",
           }}
         />
 
@@ -190,11 +181,11 @@ const RootStack = () => {
         component={EditProfileScreen}
         options={({ navigation }) => ({
           headerTitle: () => (
-            <View style={styles.headerTitle}>
+            <View style={styles.headerTITLE}>
             </View>
           ),
           headerBackground: () => (
-            <View style={styles.headerBackground}></View>
+            <View style={styles.headBG}></View>
           ),
           headerTintColor: 'black', // Back button color
           headerRight: () => (
