@@ -34,7 +34,6 @@ const MenuScreen = () => {
   };
 
   return (
-    <ScrollView>
     <View style={styles.container}>
       <View style={styles.insideContainer}>
         <View style={{ marginTop: 13}}>
@@ -128,7 +127,7 @@ const MenuScreen = () => {
 
       </View>
     </View>
-    </ScrollView>
+   
 
   );
 };
@@ -141,7 +140,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     borderRadius: 20,
     flex: 1,
-    backgroundColor: "white",
   },
   insideContainer:{
     width: '85%',
@@ -152,7 +150,6 @@ const styles = StyleSheet.create({
     width: "105%",
     backgroundColor: "#8E8E8E",
     marginTop: 20,
-    color: '#8E8E8E',
     marginLeft: 20,
   },
   pic_cont:{

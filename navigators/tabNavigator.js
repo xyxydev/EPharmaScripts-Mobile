@@ -90,7 +90,7 @@ const TabNavigator = () => {
           marginBottom: 15,
           marginLeft: 15,
           marginRight: 15,
-          elevation: 2, // This property controls the shadow on Android
+          elevation: 1, // This property controls the shadow on Android
           shadowColor: '#000', // Set the shadow color
           shadowOpacity: 0.3, // Set the shadow opacity
           shadowRadius: 5, // Set the shadow radius

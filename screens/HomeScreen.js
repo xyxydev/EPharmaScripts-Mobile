@@ -2,8 +2,9 @@ import React from "react";
 import { Iconify } from "react-native-iconify";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import { useNavigation } from "@react-navigation/native";
-import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView,TouchableOpacity, Dimensions, StatusBar } from "react-native";
+import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView,TouchableOpacity, Dimensions } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { StatusBar } from "expo-status-bar";
 
 const { width, height } = Dimensions.get("window");
 

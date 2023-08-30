@@ -1,22 +1,126 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, StatusBar } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Iconify } from "react-native-iconify";
 import { Colors} from "../components/styles";
-
+import { StatusBar } from "expo-status-bar";
 
 const { bodyGray } = Colors;
 const { orange } = Colors;
 
+const ProfileScreen = () => {
+  const navigation = useNavigation();
+
+  const handleEditProfileScreen = () => {
+    // Navigate to my order screen
+    navigation.navigate("EditProfileScreen");
+  };
+
+  return (
+      <View style={styles.container}>
+          <View style={styles.insideContainer}>
+            <StatusBar backgroundColor="white"/>
+            <Text style={styles.title}>Personal Information</Text>
+              <View style={styles.pic_cont}>
+                <Image
+                  source={require("../assets/img/cymer.jpg")}
+                  className="w-full h-full rounded-full"
+                />
+              </View>
+              <View style={styles.nameGmailButton}>
+                <Text style={styles.name}>Xyxy Pinakurat</Text>
+                <Text style={styles.gmail}>xyxypinakurat@gmail.com</Text>
+                <TouchableOpacity onPress={handleEditProfileScreen}>
+                <Text style={styles.editButton}>Edit Profile</Text>
+                </TouchableOpacity> 
+              </View>
+
+              <View style={styles.line}/>
+          
+
+
+          <View style={styles.lowerContainer}> 
+            <TouchableOpacity onPress>
+              <View style={styles.viewCont}> 
+                <View style={styles.iconsBG}>
+                   <Iconify icon="codicon:account" size={22} color="black" />
+                </View>
+                <Text style={styles.viewContText}>Account</Text>
+                <View style={styles.arrowIcon}>
+                  <Iconify icon="iconoir:nav-arrow-right" size={22} color="black" />
+                </View>
+                
+              </View>
+            </TouchableOpacity>
+          
+            <TouchableOpacity onPress>
+              <View style={styles.viewCont}>
+                <View style={styles.iconsBG}>
+                   <Iconify icon="ion:location-outline" size={22} color="black" />
+                </View> 
+                <Text style={styles.viewContText}>Address</Text>
+                <View style={styles.arrowIcon}>
+                  <Iconify icon="iconoir:nav-arrow-right" size={22} color="black" />
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress>
+              <View style={styles.viewCont}> 
+                <View style={styles.iconsBG}>
+                   <Iconify icon="mdi:security-lock-outline" size={22} color="black" />
+                </View> 
+                <Text style={styles.viewContText}>Security</Text>
+                <View style={styles.arrowIcon}>
+                  <Iconify icon="iconoir:nav-arrow-right" size={22} color="black" />
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress>
+              <View style={styles.viewCont}> 
+                <View style={styles.iconsBG}>
+                   <Iconify icon="iconamoon:notification" size={22} color="black" />
+                </View> 
+                <Text style={styles.viewContText}>Notifications</Text>
+                <View style={styles.arrowIcon}>
+                  <Iconify icon="iconoir:nav-arrow-right" size={22} color="black" />
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <View style={styles.line2}/>
+            <TouchableOpacity onPress>
+              <View style={styles.viewCont} className="mt-2"> 
+                <View style={styles.iconsBG}>
+                   <Iconify icon="ic:outline-delete" size={22} color="black" />
+                </View> 
+                <Text style={styles.viewContText}>Delete Account</Text>
+                <View style={styles.arrowIcon}>
+                  <Iconify icon="iconoir:nav-arrow-right" size={22} color="black" />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+  );
+};
+
+export default ProfileScreen;
+
+
 const styles = StyleSheet.create({
-  wholeContainer:{
+  container:{
     backgroundColor: 'white',
-    paddingBottom: 400,
+    paddingBottom: 20,
     borderRadius: 20,
+    flex: 1,
   },
-  upperContainer:{
+  insideContainer:{
     alignItems: 'center', // Align items vertically
     justifyContent: 'center', // Center items horizontally
+    width: '100%',
   },
   lowerContainer:{
     width: '80%',
@@ -26,13 +130,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginTop:15,
-  },
-  voucher_cont:{
-    width: 110,
-    marginLeft:20,
-  },
-  getDiscount_cont:{
-    width: 220,
   },
   save_cont:{
     alignItems: 'center',
@@ -71,21 +168,16 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   line: {
-    height: 0.5,
-    width: '80%',
-    backgroundColor: '#8E8E8E',
+    height: 0.4,
+    width: "80%",
     marginTop: 20,
-
+    backgroundColor: '#8E8E8E',
   },
   line2: {
     height: 0.5,
-    width: '100%',
-    backgroundColor: '#8E8E8E',
+    width: "100%",
     marginTop: 20,
-    alignItems: 'center', // Align items vertically
-    justifyContent: 'center',
-    marginLeft: 40,
-
+    backgroundColor: '#8E8E8E',
   },
   viewCont: {
     flexDirection: 'row', // Arrange icons and text horizontally
@@ -100,94 +192,16 @@ const styles = StyleSheet.create({
     marginLeft: 13,
     marginVertical: 15,
   },
+  arrowIcon: {
+    flex: 1,                 // Distribute remaining space
+    alignItems: 'flex-end',  // Align icon to the end of the flex container
+    marginLeft: 'auto', 
+    marginRight: -10,
+  },
   iconsBG: {
     backgroundColor: '#F5F5F5',
-    marginLeft: 25,
-  }
+    padding: 10,
+    borderRadius: 10, 
+    marginRight: 15, 
+  },
 });
-
-
-const ProfileScreen = () => {
-  const navigation = useNavigation();
-
-  const handleEditProfileScreen = () => {
-    // Navigate to my order screen
-    navigation.navigate("EditProfileScreen");
-  };
-
-  return (
-      <View style={styles.wholeContainer}>
-          <View style={styles.upperContainer}>
-            <StatusBar backgroundColor="white" barStyle="light-content" />
-            <Text style={styles.title}>Personal Information</Text>
-              <View style={styles.pic_cont}>
-                <Image
-                  source={require("../assets/img/cymer.jpg")}
-                  className="w-full h-full rounded-full"
-                />
-              </View>
-
-              <View style={styles.nameGmailButton}>
-                <Text style={styles.name}>Xyxy Pinakurat</Text>
-                <Text style={styles.gmail}>xyxypinakurat@gmail.com</Text>
-                <TouchableOpacity onPress={handleEditProfileScreen}>
-                <Text style={styles.editButton}>Edit Profile</Text>
-                </TouchableOpacity> 
-              </View>
-
-              <View style={styles.line}></View> 
-          </View>
-
-
-          <View style={styles.lowerContainer}> 
-
-            <TouchableOpacity onPress>
-              <View style={styles.viewCont}> 
-                <Iconify style={styles.iconsBG} icon="codicon:account" size={22} color="black" />
-                <Text style={styles.viewContText}>My Account</Text>
-                <Iconify style={{  marginLeft: 155}} icon="iconoir:nav-arrow-right" size={22} color="black" />
-                
-              </View>
-            </TouchableOpacity>
-          
-            <TouchableOpacity onPress>
-              <View style={styles.viewCont}> 
-                <Iconify style={styles.iconsBG} icon="ion:location-outline" size={22} color="black" />
-                <Text style={styles.viewContText}>My Address</Text>
-                <Iconify style={{  marginLeft: 155}} icon="iconoir:nav-arrow-right" size={22} color="black" />
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress>
-              <View style={styles.viewCont}> 
-                <Iconify style={styles.iconsBG} icon="mdi:security-lock-outline" size={22} color="black" />
-                <Text style={styles.viewContText}>Password and Security</Text>
-                <Iconify style={{  marginLeft: 75}} icon="iconoir:nav-arrow-right" size={22} color="black" />
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress>
-              <View style={styles.viewCont}> 
-                <Iconify style={styles.iconsBG} icon="iconamoon:notification" size={22} color="black" />
-                <Text style={styles.viewContText}>Notifications</Text>
-                <Iconify style={{  marginLeft: 150}} icon="iconoir:nav-arrow-right" size={22} color="black" />
-              </View>
-            </TouchableOpacity>
-
-            <View style={styles.line2}></View>
-
-            <TouchableOpacity onPress>
-              <View style={styles.viewCont} className="mt-2"> 
-                <Iconify style={styles.iconsBG} icon="ic:outline-delete" size={22} color="black" />
-                <Text style={styles.viewContText}>Delete Account</Text>
-                <Iconify style={{  marginLeft: 130}} icon="iconoir:nav-arrow-right" size={22} color="black" />
-              </View>
-            </TouchableOpacity>
-
-          </View>
- 
-      </View>
-  );
-};
-
-export default ProfileScreen;
