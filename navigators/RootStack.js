@@ -15,8 +15,10 @@ import { Octicons, Ionicons } from "@expo/vector-icons";
 import Login from "../screens/login";
 import Signup from "../screens/Signup";
 import TabNavigator from "./tabNavigator"; //import TabNavigator
-import NotificationScreen from "../screens/NotificationScreen"; // ----------new
-import SettingsScreen from "../screens/SettingsScreen"; // ----------new
+import NotificationScreen from "../screens/NotificationScreen"; 
+import SettingsScreen from "../screens/SettingsScreen"; 
+import StoreLocatorScreen from "../screens/StoreLocatorScreen"; 
+import FavoritesScreen from "../screens/FavoritesScreen"; 
 import BranchesScreen from "../screens/BranchesScreen";
 import TermsConditions from "../screens/TermsConditions";
 import EditProfileScreen from "../screens/EditProfileScreen";
@@ -47,14 +49,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginRight: 20
   },
-  headerTITLE:{
-    marginLeft: -18, 
-    marginBottom: 2 
-  },
-  headBG:{
-    flex: 1, 
-    backgroundColor: '#F5F5F5',
-  }
 });
 
 const Stack = createStackNavigator();
@@ -67,7 +61,6 @@ const RootStack = () => {
           headerStyle: {
             backgroundColor:'#F5F5F5',
           },
-          headerTintColor: tertiary,
         }}
         initialRouteName="Login"
       >
@@ -76,11 +69,7 @@ const RootStack = () => {
           component={MenuScreen}
           options={({ navigation }) => ({
             headerTitle: () => (
-              <View style={styles.headerTITLE}>
-              </View>
-            ),
-            headerBackground: () => (
-              <View style={{ flex: 1, backgroundColor: '#F5F5F5' }}></View>
+              <View></View>
             ),
             headerTintColor: 'black', // Back button color
           })}
@@ -127,15 +116,31 @@ const RootStack = () => {
           component={SettingsScreen}
           options={{
             headerTitle: () => (
-              <View style={{ marginLeft: -18, marginBottom: 2 }}>
-                <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold'}}>Settings</Text>
-              </View>
+              <View></View>
             ),
-            headerBackground: () => (
-              <View style={{ flex: 1, backgroundColor: red }}>
-              </View>
+            headerTintColor: 'black', 
+          }}
+        />
+
+        <Stack.Screen
+          name="FavoritesScreen"
+          component={FavoritesScreen}
+          options={{
+            headerTitle: () => (
+              <View></View>
             ),
-            headerTintColor: 'white', 
+            headerTintColor: 'black', 
+          }}
+        />
+
+        <Stack.Screen
+          name="StoreLocatorScreen"
+          component={StoreLocatorScreen}
+          options={{
+            headerTitle: () => (
+              <View></View>
+            ),
+            headerTintColor: 'black', 
           }}
         />
 
@@ -144,13 +149,7 @@ const RootStack = () => {
           component={ProfileScreen}
           options={{
             headerTitle: () => (
-              <View style={{ marginLeft: -18, marginBottom: 2 }}>
-  
-              </View>
-            ),
-            headerBackground: () => (
-              <View style={{ flex: 1, backgroundColor: bodyGray}}>
-              </View>
+              <View></View>
             ),
             headerTintColor: 'black', //back button
           }}

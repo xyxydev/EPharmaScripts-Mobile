@@ -81,7 +81,7 @@ const MenuScreen = () => {
               </View>
             </TouchableOpacity>
 
-             <TouchableOpacity onPress>
+             <TouchableOpacity onPress={handleFavoritesScreen}>
               <View style={styles.viewCont}> 
                  <View style={styles.iconsBG}>
                   <Iconify icon="ph:heart-light" size={22} color="#EC6F56" />
@@ -93,7 +93,7 @@ const MenuScreen = () => {
               </View>
             </TouchableOpacity>
 
-             <TouchableOpacity onPress>
+             <TouchableOpacity onPress={handleStoreLocatorScreen}>
               <View style={styles.viewCont}> 
                 <View style={styles.iconsBG}>
                   <Iconify icon="ion:location-outline" size={22} color="#EC6F56" />
@@ -105,7 +105,7 @@ const MenuScreen = () => {
               </View>
             </TouchableOpacity>
             
-             <TouchableOpacity onPress>
+             <TouchableOpacity onPress={handleSettingsScreen}>
               <View style={styles.viewCont}> 
                 <View style={styles.iconsBG}>
                   <Iconify icon="solar:settings-outline" size={22} color="#EC6F56" />
