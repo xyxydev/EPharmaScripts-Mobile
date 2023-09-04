@@ -16,9 +16,10 @@ import Login from "../screens/login";
 import Signup from "../screens/Signup";
 import TabNavigator from "./tabNavigator"; //import TabNavigator
 import NotificationScreen from "../screens/NotificationScreen"; 
-import SettingsScreen from "../screens/SettingsScreen"; 
-import StoreLocatorScreen from "../screens/StoreLocatorScreen"; 
+import InstallmentScreen from "../screens/InstallmentScreen"; 
 import FavoritesScreen from "../screens/FavoritesScreen"; 
+import StoreLocatorScreen from "../screens/StoreLocatorScreen"; 
+import SettingsScreen from "../screens/SettingsScreen"; 
 import BranchesScreen from "../screens/BranchesScreen";
 import TermsConditions from "../screens/TermsConditions";
 import EditProfileScreen from "../screens/EditProfileScreen";
@@ -112,8 +113,8 @@ const RootStack = () => {
         />
 
         <Stack.Screen
-          name="SettingsScreen"
-          component={SettingsScreen}
+          name="InstallmentScreen"
+          component={InstallmentScreen}
           options={{
             headerTitle: () => (
               <View></View>
@@ -136,6 +137,17 @@ const RootStack = () => {
         <Stack.Screen
           name="StoreLocatorScreen"
           component={StoreLocatorScreen}
+          options={{
+            headerTitle: () => (
+              <View></View>
+            ),
+            headerTintColor: 'black', 
+          }}
+        />
+
+        <Stack.Screen
+          name="SettingsScreen"
+          component={SettingsScreen}
           options={{
             headerTitle: () => (
               <View></View>

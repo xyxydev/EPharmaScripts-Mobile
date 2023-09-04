@@ -69,7 +69,7 @@ const MenuScreen = () => {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress>
+            <TouchableOpacity onPress={handleInstallmentScreen}>
               <View style={styles.viewCont}> 
                 <View style={styles.iconsBG}>
                   <Iconify icon="quill:creditcard" size={22} color="#EC6F56" />
