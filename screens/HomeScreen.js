@@ -40,7 +40,11 @@ const HomeScreen = () => {
         <View style={styles.pharmacyCard}>
           <Image style={styles.image} source={item.image} />
           <Text style={styles.pharmacyName}>{item.name}</Text>
-          <TouchableOpacity onPress={handleBranches}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("BranchesScreen", { name: item.name })
+            }
+          >
             <View style={styles.viewButton}>
               <Text style={styles.viewButtonText}>View Pharmacy</Text>
               <Iconify icon="ic:round-greater-than" size={15} color="#EC6F56" />

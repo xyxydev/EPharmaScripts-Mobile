@@ -15,16 +15,17 @@ import { Octicons, Ionicons } from "@expo/vector-icons";
 import Login from "../screens/login";
 import Signup from "../screens/Signup";
 import TabNavigator from "./tabNavigator"; //import TabNavigator
-import NotificationScreen from "../screens/NotificationScreen"; 
-import InstallmentScreen from "../screens/InstallmentScreen"; 
-import FavoritesScreen from "../screens/FavoritesScreen"; 
-import StoreLocatorScreen from "../screens/StoreLocatorScreen"; 
-import SettingsScreen from "../screens/SettingsScreen"; 
+import NotificationScreen from "../screens/NotificationScreen";
+import InstallmentScreen from "../screens/InstallmentScreen";
+import FavoritesScreen from "../screens/FavoritesScreen";
+import StoreLocatorScreen from "../screens/StoreLocatorScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 import BranchesScreen from "../screens/BranchesScreen";
 import TermsConditions from "../screens/TermsConditions";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import MenuScreen from "../screens/MenuScreen";
+import CartNavigatorHeader from "./CartNavigatorHeader";
 
 import { Colors } from "../components/styles"; //import colors
 
@@ -38,9 +39,9 @@ import { useIsFocused } from "@react-navigation/native";
 
 const { tertiary, white, red, bodyGray } = Colors;
 const styles = StyleSheet.create({
-  saveButton:{
-    backgroundColor: 'black',
-    color: 'white',
+  saveButton: {
+    backgroundColor: "black",
+    color: "white",
     paddingTop: 8,
     paddingBottom: 8,
     paddingLeft: 20,
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     fontWeight: 600,
     fontSize: 14,
-    marginRight: 20
+    marginRight: 20,
   },
 });
 
@@ -60,7 +61,7 @@ const RootStack = () => {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor:'#F5F5F5',
+            backgroundColor: "#F5F5F5",
           },
         }}
         initialRouteName="Login"
@@ -69,10 +70,8 @@ const RootStack = () => {
           name="MenuScreen"
           component={MenuScreen}
           options={({ navigation }) => ({
-            headerTitle: () => (
-              <View></View>
-            ),
-            headerTintColor: 'black', // Back button color
+            headerTitle: () => <View></View>,
+            headerTintColor: "black", // Back button color
           })}
         />
         <Stack.Screen
@@ -102,12 +101,15 @@ const RootStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="ShoppingCartScreen"
+          component={TabNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="NotificationScreen"
           component={NotificationScreen}
           options={{
-            headerTitle: () => (
-              <View></View>
-            ),
+            headerTitle: () => <View></View>,
             headerTintColor: "black",
           }}
         />
@@ -116,10 +118,8 @@ const RootStack = () => {
           name="InstallmentScreen"
           component={InstallmentScreen}
           options={{
-            headerTitle: () => (
-              <View></View>
-            ),
-            headerTintColor: 'black', 
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
           }}
         />
 
@@ -127,10 +127,8 @@ const RootStack = () => {
           name="FavoritesScreen"
           component={FavoritesScreen}
           options={{
-            headerTitle: () => (
-              <View></View>
-            ),
-            headerTintColor: 'black', 
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
           }}
         />
 
@@ -138,10 +136,8 @@ const RootStack = () => {
           name="StoreLocatorScreen"
           component={StoreLocatorScreen}
           options={{
-            headerTitle: () => (
-              <View></View>
-            ),
-            headerTintColor: 'black', 
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
           }}
         />
 
@@ -149,10 +145,8 @@ const RootStack = () => {
           name="SettingsScreen"
           component={SettingsScreen}
           options={{
-            headerTitle: () => (
-              <View></View>
-            ),
-            headerTintColor: 'black', 
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
           }}
         />
 
@@ -160,56 +154,39 @@ const RootStack = () => {
           name="ProfileScreen"
           component={ProfileScreen}
           options={{
-            headerTitle: () => (
-              <View></View>
-            ),
-            headerTintColor: 'black', //back button
-          }}
-        />
-        
-        <Stack.Screen
-          name="BranchesScreen"
-          component={BranchesScreen}
-          options={{
-            headerTitle: () => (
-              <View style={{ marginLeft: -18, marginBottom: 2 }}>
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
-                >
-                  Branches
-                </Text>
-              </View>
-            ),
-            headerBackground: () => (
-              <View style={{ flex: 1, backgroundColor: red }}></View>
-            ),
-            headerTintColor: "white",
+            headerTitle: () => <View></View>,
+            headerTintColor: "black", //back button
           }}
         />
 
         <Stack.Screen
-        name="EditProfileScreen"
-        component={EditProfileScreen}
-        options={({ navigation }) => ({
-          headerTitle: () => (
-            <View style={styles.headerTITLE}>
-            </View>
-          ),
-          headerBackground: () => (
-            <View style={styles.headBG}></View>
-          ),
-          headerTintColor: 'black', // Back button color
-          headerRight: () => (
-            <TouchableOpacity onPress={() => {
-                // Handle the save action here
-              }}
-            >
-              <Text style={styles.saveButton}>SAVE</Text>
-            </TouchableOpacity>
-          ),
-        })}
-      />
-      
+          name="BranchesScreen"
+          component={BranchesScreen}
+          options={{
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
+            headerRight: () => <CartNavigatorHeader />, // Use CartNavigatorHeader component here
+          }}
+        />
+
+        <Stack.Screen
+          name="EditProfileScreen"
+          component={EditProfileScreen}
+          options={({ navigation }) => ({
+            headerTitle: () => <View style={styles.headerTITLE}></View>,
+            headerBackground: () => <View style={styles.headBG}></View>,
+            headerTintColor: "black", // Back button color
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  // Handle the save action here
+                }}
+              >
+                <Text style={styles.saveButton}>SAVE</Text>
+              </TouchableOpacity>
+            ),
+          })}
+        />
       </Stack.Navigator>
     </TailwindProvider>
   );
