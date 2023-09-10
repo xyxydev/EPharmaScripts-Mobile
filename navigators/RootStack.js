@@ -1,20 +1,10 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
-import { Octicons, Ionicons } from "@expo/vector-icons";
+import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-//screens
-import Login from "../screens/login";
-import Signup from "../screens/Signup";
-import TabNavigator from "./tabNavigator"; //import TabNavigator
+import TabNavigator from "./tabNavigator";
 import NotificationScreen from "../screens/NotificationScreen";
 import InstallmentScreen from "../screens/InstallmentScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
@@ -27,35 +17,36 @@ import ProfileScreen from "../screens/ProfileScreen";
 import MenuScreen from "../screens/MenuScreen";
 import CartNavigatorHeader from "./CartNavigatorHeader";
 
-import { Colors } from "../components/styles"; //import colors
-
-import Icon from "react-native-vector-icons/MaterialIcons"; //icons
-
-//tailwind
+import { Colors } from "../components/styles";
 import { TailwindProvider } from "tailwindcss-react-native";
 
-//statusbar state
-import { useIsFocused } from "@react-navigation/native";
-
 const { tertiary, white, red, bodyGray } = Colors;
-const styles = StyleSheet.create({
-  saveButton: {
-    backgroundColor: "black",
-    color: "white",
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 20,
-    paddingRight: 20,
-    borderRadius: 20,
-    fontWeight: 600,
-    fontSize: 14,
-    marginRight: 20,
-  },
-});
 
 const Stack = createStackNavigator();
 
 const RootStack = () => {
+  // const [initialRouteName, setInitialRouteName] = useState("HomeScreen");
+
+  // useEffect(() => {
+  //   // Check if the user has a token in AsyncStorage
+  //   const checkToken = async () => {
+  //     try {
+  //       const token = await AsyncStorage.getItem("token");
+  //       console.log("Token found in AsyncStorage:", token);
+
+  //       if (!token) {
+  //         // No token, navigate to Login
+  //         console.log("No token, navigating to Login Screen");
+  //         setInitialRouteName("Login");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking token:", error);
+  //     }
+  //   };
+
+  //   checkToken();
+  // }, []);
+
   return (
     <TailwindProvider>
       <Stack.Navigator
@@ -64,15 +55,20 @@ const RootStack = () => {
             backgroundColor: "#F5F5F5",
           },
         }}
-        initialRouteName="Login"
+        // initialRouteName={initialRouteName}
       >
+        <Stack.Screen
+          name="HomeScreen"
+          component={TabNavigator}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="MenuScreen"
           component={MenuScreen}
-          options={({ navigation }) => ({
+          options={{
             headerTitle: () => <View></View>,
-            headerTintColor: "black", // Back button color
-          })}
+            headerTintColor: "black",
+          }}
         />
         <Stack.Screen
           name="TermsConditions"
@@ -80,25 +76,6 @@ const RootStack = () => {
           options={{
             headerShown: false,
           }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="HomeScreen"
-          component={TabNavigator}
-          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="ShoppingCartScreen"
@@ -113,7 +90,6 @@ const RootStack = () => {
             headerTintColor: "black",
           }}
         />
-
         <Stack.Screen
           name="InstallmentScreen"
           component={InstallmentScreen}
@@ -122,7 +98,6 @@ const RootStack = () => {
             headerTintColor: "black",
           }}
         />
-
         <Stack.Screen
           name="FavoritesScreen"
           component={FavoritesScreen}
@@ -131,7 +106,6 @@ const RootStack = () => {
             headerTintColor: "black",
           }}
         />
-
         <Stack.Screen
           name="StoreLocatorScreen"
           component={StoreLocatorScreen}
@@ -140,7 +114,6 @@ const RootStack = () => {
             headerTintColor: "black",
           }}
         />
-
         <Stack.Screen
           name="SettingsScreen"
           component={SettingsScreen}
@@ -149,33 +122,30 @@ const RootStack = () => {
             headerTintColor: "black",
           }}
         />
-
         <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
           options={{
             headerTitle: () => <View></View>,
-            headerTintColor: "black", //back button
+            headerTintColor: "black",
           }}
         />
-
         <Stack.Screen
           name="BranchesScreen"
           component={BranchesScreen}
           options={{
             headerTitle: () => <View></View>,
             headerTintColor: "black",
-            headerRight: () => <CartNavigatorHeader />, // Use CartNavigatorHeader component here
+            headerRight: () => <CartNavigatorHeader />,
           }}
         />
-
         <Stack.Screen
           name="EditProfileScreen"
           component={EditProfileScreen}
           options={({ navigation }) => ({
             headerTitle: () => <View style={styles.headerTITLE}></View>,
             headerBackground: () => <View style={styles.headBG}></View>,
-            headerTintColor: "black", // Back button color
+            headerTintColor: "black",
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {

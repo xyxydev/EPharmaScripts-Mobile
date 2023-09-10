@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik"; // Import Formik
@@ -40,47 +41,41 @@ import KeyboardAvoidingWrapper from "./../components/KeyboardAvoidingWrapper";
 
 //firebase
 import { authentication } from "../firebase/firebase";
+import { auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
+import { AuthContext } from "../src/api/context";
+import { saveAuthToken } from "../src/api/authToken";
 
 const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  //text input states
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  // State variable for error message
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const { signIn } = React.useContext(AuthContext);
 
-  useEffect(() => {
-    let timeoutId;
-    if (error) {
-      // Set a timeout to clear the error message after 3 seconds
-      timeoutId = setTimeout(() => {
-        setError(null);
-      }, 5000);
+  const SignInUser = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      const token = await user.getIdToken(); // Get the authentication token
+
+      await saveAuthToken(user.email, token); // Save user's email and token to AsyncStorage
+      signIn(token); // Update the user's token in the context
+    } catch (error) {
+      if (error.code === "auth/invalid-email") {
+        setError("Invalid Credentials");
+      } else {
+        setError("Invalid Credentials");
+        // console.error("Error signing in:", error);
+        console.log("Error signing in:", error);
+      }
     }
-    // Clear the timeout when the component unmounts or the error state changes
-    return () => clearTimeout(timeoutId);
-  }, [error]);
+  };
 
-
-  //authentication
-  const SignInUser = () => {
-    signInWithEmailAndPassword(authentication, email, password)
-      .then(() => {
-        setIsSignedIn(true);
-        navigation.navigate("HomeScreen");
-      })
-      .catch((error) => {
-        if (error.code === "auth/invalid-email") {
-          setError("Invalid Credentials");
-        } else {
-          setError("Invalid Credentials");
-          console.log(error);
-        }
-      });
-  }
   return (
     <KeyboardAvoidingWrapper>
       <StyledContainer>
@@ -91,25 +86,27 @@ const Login = ({ navigation }) => {
             source={require("../assets/img/ep-logo.png")}
           />
           <Subtitle>Welcome to E-Pharmascripts</Subtitle>
-          
+
           <Formik
             initialValues={{ email: "", password: "" }}
             onSubmit={(values) => {
-              console.log(values);
-              navigation.navigate("HomeScreen");
+              // console.log(values);
+              // navigation.navigate("HomeScreen");
             }}
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
               <StyledFormArea>
-                  {/* Error message */}
-                  <View style={{ flex: 1, alignItems: "center", height: 36 }}>
-                    {error && <MsgBox style="text-center text-sm">{error}</MsgBox>}
-                  </View>
+                {/* Error message */}
+                <View style={{ flex: 1, alignItems: "center", height: 36 }}>
+                  {error && (
+                    <MsgBox style="text-center text-sm">{error}</MsgBox>
+                  )}
+                </View>
                 <MyTextInput
                   placeholder="Email"
                   placeholderTextColor={darkLight}
                   // onChangeText={handleChange("email")}
-                  onChangeText={text=>setEmail(text)}
+                  onChangeText={(text) => setEmail(text)}
                   onBlurText={handleBlur("email")}
                   value={email}
                   keyboardType="email-address"
@@ -119,7 +116,7 @@ const Login = ({ navigation }) => {
                   placeholder="Password"
                   placeholderTextColor={darkLight}
                   // onChangeText={handleChange("password")}
-                  onChangeText={text=>setPassword(text)}
+                  onChangeText={(text) => setPassword(text)}
                   onBlurText={handleBlur("password")}
                   value={password}
                   secureTextEntry={hidePassword}
@@ -128,14 +125,26 @@ const Login = ({ navigation }) => {
                   setHidePassword={setHidePassword}
                   style={{ marginTop: -15 }}
                 />
-                <MsgBox style={{ marginTop: 3, marginBottom: 10 }}>Forgot password?</MsgBox>
+                <MsgBox style={{ marginTop: 3, marginBottom: 10 }}>
+                  Forgot password?
+                </MsgBox>
                 {}
                 <StyledButton onPress={SignInUser}>
                   <ButtonText>Login</ButtonText>
                 </StyledButton>
-                <Text className="text-center" style={{fontSize: 16, fontWeight: 400,  marginTop: 8, marginBottom: 8 }}>or</Text>
+                <Text
+                  className="text-center"
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 400,
+                    marginTop: 8,
+                    marginBottom: 8,
+                  }}
+                >
+                  or
+                </Text>
 
-                <GoogleButton onPress={handleSubmit}>
+                <GoogleButton onPress={() => navigation.navigate("HomeScreen")}>
                   <GoogleImage
                     resizeMode="cover"
                     source={require("../assets/img/g-logo.png")}
@@ -173,7 +182,7 @@ const MyTextInput = ({
         placeholderTextColor="black"
         selectionColor={orange} // Set the caret color to red
         style={{
-          textAlign: 'left',
+          textAlign: "left",
         }}
       />
       {isPassword && (
@@ -182,13 +191,12 @@ const MyTextInput = ({
             name={hidePassword ? "md-eye-off" : "md-eye"}
             size={23}
             color={darkLight}
-            style={{ marginTop: -17}}
+            style={{ marginTop: -17 }}
           />
         </RightIcon>
       )}
     </View>
   );
 };
-
 
 export default Login;
