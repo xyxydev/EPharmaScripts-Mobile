@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import TabNavigator from "./tabNavigator";
 import NotificationScreen from "../screens/NotificationScreen";
+import OrderScreen from "../screens/OrderScreen";
 import InstallmentScreen from "../screens/InstallmentScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import StoreLocatorScreen from "../screens/StoreLocatorScreen";
@@ -88,6 +89,15 @@ const RootStack = () => {
           options={{
             headerTitle: () => <View></View>,
             headerTintColor: "black",
+          }}
+        />
+        <Stack.Screen
+          name="OrderScreen"
+          component={OrderScreen}
+          options={{
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
+            headerRight: () => <CartNavigatorHeader />,
           }}
         />
         <Stack.Screen

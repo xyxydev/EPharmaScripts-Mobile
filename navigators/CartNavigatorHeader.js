@@ -17,10 +17,10 @@ const CartNavigatorHeader = () => {
       style={{ alignSelf: "flex-end" }}
     >
       <Iconify
-        icon="material-symbols:shopping-cart-outline"
+        icon="ion:cart-outline"
         size={24}
-        color="red"
-        style={{ marginRight: 20 }}
+        color="#EC6F56"
+        style={{ marginRight: 25 }}
       />
     </TouchableOpacity>
   );

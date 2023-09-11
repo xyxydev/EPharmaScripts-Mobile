@@ -75,7 +75,7 @@ const MenuScreen = () => {
         <View style={styles.line} />
 
         <View style={{ marginTop: 10 }}>
-          <TouchableOpacity onPress>
+          <TouchableOpacity onPress={handleOrderScreen}>
             <View style={styles.viewCont}>
               <View style={styles.iconsBG}>
                 <Iconify
