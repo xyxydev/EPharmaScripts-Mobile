@@ -16,6 +16,7 @@ import TermsConditions from "../screens/TermsConditions";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import MenuScreen from "../screens/MenuScreen";
+import RateScreen from "../screens/RateScreen";
 import CartNavigatorHeader from "./CartNavigatorHeader";
 
 import { Colors } from "../components/styles";
@@ -166,6 +167,15 @@ const RootStack = () => {
               </TouchableOpacity>
             ),
           })}
+        />
+        <Stack.Screen
+          name="RateScreen"
+          component={RateScreen}
+          options={{
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
+            headerRight: () => <CartNavigatorHeader />,
+          }}
         />
       </Stack.Navigator>
     </TailwindProvider>

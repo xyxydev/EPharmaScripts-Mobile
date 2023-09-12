@@ -4,9 +4,13 @@ import { Iconify } from "react-native-iconify";
 import OrderSwitchTabs from "../components/OrderSwitchTabs";
 import { Checkbox } from "expo-checkbox";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+
 
 
 const OrderScreen = () => {
+  const navigation = useNavigation();
+  
   const [trackerTab, setTrackerTab] = useState(1);
   const onSelectSwitch = (value) => {
     setTrackerTab(value);
@@ -20,6 +24,11 @@ const OrderScreen = () => {
 
   // State for the checkbox
   const [isChecked, setIsChecked] = useState(false); 
+
+  const handleRateScreen = () => {
+    // Navigate to my order screen
+    navigation.navigate("RateScreen");
+  };
   
   return (
     <View style={styles.container}>
@@ -168,7 +177,7 @@ const OrderScreen = () => {
                       <Text style={styles.viewText}>VIEW</Text>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={handleRateScreen}>
                     <View style={styles.rateButton}>
                       <Text style={styles.rateText}>RATE</Text>
                     </View>
