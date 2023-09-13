@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Iconify } from "react-native-iconify";
 import { Checkbox } from "expo-checkbox";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 
 const ShoppingCartScreen = () => {
@@ -21,6 +22,13 @@ const ShoppingCartScreen = () => {
       setQuantity(quantity - 1);
     }
   }
+
+  const navigation = useNavigation();
+
+  const handleToValidateScreen = () => {
+    // Navigate to my order screen
+    navigation.navigate("ToValidateScreen");
+  };
 
   return (
     <View style={[styles.container, { height: deviceHeight-125}]}>
@@ -76,7 +84,7 @@ const ShoppingCartScreen = () => {
                 <Text style={styles.totalText}>Total</Text>
                 <Text style={styles.totalAmountText}>₱ 152.75</Text>
               </View>
-              <TouchableOpacity style={styles.checkoutWrapper}>
+              <TouchableOpacity style={styles.checkoutWrapper} onPress={handleToValidateScreen}>
                 <Text style={styles.checkoutText}>CHECKOUT</Text>
               </TouchableOpacity>
             </View>

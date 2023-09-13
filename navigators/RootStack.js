@@ -18,6 +18,8 @@ import ProfileScreen from "../screens/ProfileScreen";
 import MenuScreen from "../screens/MenuScreen";
 import RateScreen from "../screens/RateScreen";
 import ViewCompletedOrderScreen from "../screens/ViewCompletedOrderScreen";
+import ToValidateScreen from "../screens/ToValidateScreen";
+import PlaceOrderScreen from "../screens/PlaceOrderScreen";
 import CartNavigatorHeader from "./CartNavigatorHeader";
 
 import { Colors } from "../components/styles";
@@ -177,6 +179,24 @@ const RootStack = () => {
         <Stack.Screen
           name="ViewCompletedOrderScreen"
           component={ViewCompletedOrderScreen}
+          options={{
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
+            headerRight: () => <CartNavigatorHeader />,
+          }}
+        />
+        <Stack.Screen
+          name="ToValidateScreen"
+          component={ToValidateScreen}
+          options={{
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
+            headerRight: () => <CartNavigatorHeader />,
+          }}
+        />
+        <Stack.Screen
+          name="PlaceOrderScreen"
+          component={PlaceOrderScreen}
           options={{
             headerTitle: () => <View></View>,
             headerTintColor: "black",
