@@ -27,6 +27,7 @@ const RateScreen = () => {
         <Text style={styles.rateInstruction}>
           Give an overall rating of your experience
         </Text>
+        <View style={styles.separator} />
 
         <View style={styles.starContainer}>
           <Text style={styles.rateText}>Pharmacy rate:</Text>
@@ -132,5 +133,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 700,
     fontSize: 16,
+  },
+  separator:{
+    marginTop: 20,
+    height: 1,
+    width: '100%',         
+    backgroundColor: '#D9D9D9', 
+    alignSelf: 'center'
   },
 });

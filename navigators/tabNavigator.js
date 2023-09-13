@@ -122,6 +122,9 @@ const TabNavigator = () => {
         component={ShoppingCartScreen}
         options={{
           headerTitle: () => <CustomHeaderTitle />,
+          headerStyle: {
+            backgroundColor: '#F5F5F5',
+        },
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>

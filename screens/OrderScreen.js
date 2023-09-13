@@ -29,6 +29,11 @@ const OrderScreen = () => {
     // Navigate to my order screen
     navigation.navigate("RateScreen");
   };
+
+  const handleViewOrderScreen = () => {
+    // Navigate to my order screen
+    navigation.navigate("ViewCompletedOrderScreen");
+  };
   
   return (
     <View style={styles.container}>
@@ -124,7 +129,6 @@ const OrderScreen = () => {
               <Text style={styles.productPrice}>{"\u20B1"}102.75</Text>
             </View>
           </View>
-
         </View>
       }
       {trackerTab == 4 &&
@@ -172,7 +176,7 @@ const OrderScreen = () => {
             </View>
             <View>
               <View style={styles.viewRateContainer}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={handleViewOrderScreen}>
                     <View style={styles.viewButton}>
                       <Text style={styles.viewText}>VIEW</Text>
                     </View>
@@ -330,7 +334,7 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     paddingLeft: 30,
     borderRadius: 10,
-    marginRight: 10,
+    marginHorizontal: 10,
   },
   rateButton:{
     backgroundColor: '#EC6F56',
