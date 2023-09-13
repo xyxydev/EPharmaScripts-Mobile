@@ -6,12 +6,24 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 const ShoppingCartScreen = () => {
+  const deviceHeight = Dimensions.get('window').height;
+  const deviceWidth = Dimensions.get('window').width;
   // State for the checkbox
   const [isChecked, setIsChecked] = useState(false); 
-  //const QuantityButton = ({ quantity, onIncrement, onDecrement });
+  // State for the quantity button
+  const [quantity, setQuantity] = useState(1);
+
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
+  };
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { height: deviceHeight-125}]}>
         <Text style={styles.screenTitle}>MY CART</Text>
         <View style={styles.selectedProductContainer}>
             <View style={styles.productContainer}>
@@ -31,21 +43,15 @@ const ShoppingCartScreen = () => {
                 </View>
                 <View style={styles.priceRowContainer}>
                   <View style={styles.quantityButton}>
-                    <Button
-                      onPress={onDecrement}
-                      title="-"
-                      color="red"
-                      size="small"
-                      disabled={quantity === 1}
-                    />
-                        <Text style={styles.quantityText}>{quantity}</Text>
-                    <Button
-                      onPress={onIncrement}
-                      title="+"
-                      color="green"
-                      size="small"
-                    />
+                    <TouchableOpacity onPress={handleDecrement} style={styles.button}>
+                      <Iconify icon="ph:minus-fill" size={22} color="#EC6F56" />
+                    </TouchableOpacity>
+                    <Text style={styles.quantityText}>{quantity}</Text>
+                    <TouchableOpacity onPress={handleIncrement} style={styles.button}>
+                    <Iconify icon="ph:plus-fill" size={22} color="#EC6F56" />
+                    </TouchableOpacity>
                   </View>
+
                   <Text style={styles.productPrice}>{"\u20B1"}102.75</Text>
                 </View>
               </View>
@@ -56,16 +62,26 @@ const ShoppingCartScreen = () => {
                 </TouchableOpacity>
               </View>
             </View>
-           
-            <View style={styles.proceedButtonContainer}>
-              <TouchableOpacity style={styles.proceedButton}>
-                <Text style={styles.proceedText}>Proceed to payment</Text>
-                <Iconify icon="iconoir:nav-arrow-right" size={22} color="white" />
+            <View style={styles.checkoutContainer}>
+              <View style={styles.priceContainer}>
+                <Text style={styles.priceText}>Price</Text>
+                <Text style={styles.amountText}>₱ 102.75</Text>
+              </View>
+              <View style={styles.delFeeContainer}>
+                <Text style={styles.delFeeText}>Delivery Fee</Text>
+                <Text style={styles.amountText}>₱ 102.75</Text>
+              </View>
+              <View style={styles.separator} />
+              <View style={styles.totalAmountContainer}>
+                <Text style={styles.totalText}>Total</Text>
+                <Text style={styles.totalAmountText}>₱ 152.75</Text>
+              </View>
+              <TouchableOpacity style={styles.checkoutWrapper}>
+                <Text style={styles.checkoutText}>CHECKOUT</Text>
               </TouchableOpacity>
             </View>
-
-          </View>
-    </View>
+        </View>
+      </View>
   );
 };
 
@@ -82,7 +98,6 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   selectedProductContainer:{
-    flex: 1,
     height: '100%'
   },
   productContainer:{
@@ -98,7 +113,8 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   imageContainer: {
-    flex: 1, 
+    marginLeft: 10,
+    width: '40%'
   },
   productImage: {
     height: 120, 
@@ -111,7 +127,8 @@ const styles = StyleSheet.create({
   priceRowContainer:{
     marginTop: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   productName:{
     fontWeight: 600,
@@ -151,5 +168,86 @@ const styles = StyleSheet.create({
   quantityText: {
     fontSize: 14,
     fontWeight: 300,
+  },
+  separator:{
+    marginTop: 20,
+    height: 1,
+    width: '85%',         
+    backgroundColor: '#D9D9D9', 
+    alignSelf: 'center'
+  },
+  checkoutContainer:{
+    backgroundColor: 'white',
+    position: "absolute",
+    bottom: 70,
+    borderRadius: 20,
+    width: '100%',
+    paddingVertical: 25,
+    elevation: 2,
+
+  },
+  priceContainer:{
+    flexDirection: 'row',
+    alignSelf: 'center',
+    width: '60%', 
+    justifyContent: 'space-between',
+  },
+  delFeeContainer:{
+    flexDirection: 'row',
+    alignSelf: 'center',
+    width: '60%', 
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  totalAmountContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    width: '60%', 
+    marginTop: 10,
+    marginBottom: 20
+  },
+  checkoutText:{
+    fontWeight: 700,
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'white'
+  },
+  checkoutWrapper:{
+    backgroundColor: '#DC3642',
+    width: '85%',
+    alignSelf: 'center',
+    borderRadius: 30,
+    padding: 20,
+  },
+  priceText:{
+    fontWeight: 400,
+    fontSize: 15
+  },
+  delFeeText:{
+    fontWeight: 400,
+    fontSize: 15
+  },
+  amountText:{
+    fontWeight: 400,
+    fontSize: 15
+  },
+  totalText:{
+    fontWeight: 600,
+    fontSize: 15,
+    color: '#EC6F56',
+  },
+  totalAmountText:{
+    fontWeight: 600,
+    fontSize: 15,
+    color: '#EC6F56'
+  },
+  button: {
+    paddingHorizontal: 5,
+  },
+  quantityText: {
+    marginHorizontal: 7,
+    fontSize: 14,
+    fontWeight: 500,
   },
 });
