@@ -12,6 +12,7 @@ import FavoritesScreen from "../screens/FavoritesScreen";
 import StoreLocatorScreen from "../screens/StoreLocatorScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import BranchesScreen from "../screens/BranchesScreen";
+import ProductScreen from "../screens/ProductScreen";
 import TermsConditions from "../screens/TermsConditions";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -197,6 +198,15 @@ const RootStack = () => {
         <Stack.Screen
           name="PlaceOrderScreen"
           component={PlaceOrderScreen}
+          options={{
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
+            headerRight: () => <CartNavigatorHeader />,
+          }}
+        />
+        <Stack.Screen
+          name="ProductScreen"
+          component={ProductScreen}
           options={{
             headerTitle: () => <View></View>,
             headerTintColor: "black",

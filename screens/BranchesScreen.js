@@ -15,6 +15,11 @@ import { Iconify } from "react-native-iconify";
 import { TextInput } from "react-native-gesture-handler";
 
 const BranchesScreen = ({ navigation, route }) => {
+
+  const handleProductScreen= () => {
+    navigation.navigate("ProductScreen");
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -50,12 +55,7 @@ const BranchesScreen = ({ navigation, route }) => {
                 style={styles.image}
               />
               <Text style={styles.pharmacyName}>Three-Xymer Pharmacy</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  Alert.alert(
-                    "temporarily using alert since the screen doesn't exist"
-                  )
-                }
+              <TouchableOpacity onPress={handleProductScreen}
               >
                 <View>
                   <View style={styles.viewButton}>
