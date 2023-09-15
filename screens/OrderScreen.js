@@ -34,6 +34,11 @@ const OrderScreen = () => {
     // Navigate to my order screen
     navigation.navigate("ViewCompletedOrderScreen");
   };
+
+  const handleApprovedProductDetailScreen = () => {
+    // Navigate to my order screen
+    navigation.navigate("ApprovedProductDetailScreen");
+  };
   
   return (
     <View style={styles.container}>
@@ -73,7 +78,7 @@ const OrderScreen = () => {
       }
       {trackerTab == 2 &&
           <View style={styles.container}>
-            <View style={styles.productContainer}>
+            <TouchableOpacity style={styles.productContainer} onPress={handleApprovedProductDetailScreen}>
               <View>
                 <Checkbox color='#EC6F56' value={isChecked} onValueChange={setIsChecked} style={styles.checkBoxIcon} />
               </View>
@@ -99,7 +104,7 @@ const OrderScreen = () => {
                   <Iconify icon="carbon:close-filled" size={22} color="black" />
                 </TouchableOpacity>
               </View>
-            </View>
+            </TouchableOpacity>
            
             <View style={styles.proceedButtonContainer}>
               <TouchableOpacity style={styles.proceedButton}>
@@ -156,10 +161,10 @@ const OrderScreen = () => {
         <View>
           <View style={styles.completedOrderContainer}>
             <View style={styles.completedProductContainer}>
-              <View style={styles.imageContainer}>
+              <View style={styles.imageContainerCompletedScreen}>
                 <Image
                 source={require("../assets/img/amlodipine.png")}
-                style={styles.productImage}
+                style={styles.productImageCompletedScreen}
                 />
               </View>
               <View style={styles.productInfoContainer}>
@@ -225,17 +230,17 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 120,
     alignSelf: 'center',
-    marginTop: 25,
   },
   imageContainer: {
-    flex: 1, // Image takes 50% of the container width
-
+    marginLeft: 15,
+    width: '40%'
   },
   productImage: {
     height: 120, // Adjust the height as needed
     width: "100%", // Make the image take the entire container width
     marginLeft: -15,
-    
+    flex: 1,
+    resizeMode: 'contain',    
   },
   productInfoContainer: {
     flex: 1, // Product info takes 50% of the container width
@@ -343,6 +348,16 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     paddingLeft: 30,
     borderRadius: 10,
+  },
+  //image style for completed screen
+  imageContainerCompletedScreen:{
+    width: '40%',
+    marginRight: 15,
+  },
+  productImageCompletedScreen:{
+    height: 120, // Adjust the height as needed
+    width: "100%", // Make the image take the entire container width
+    resizeMode: 'contain',
   },
   
   

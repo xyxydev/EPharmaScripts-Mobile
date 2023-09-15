@@ -16,54 +16,59 @@ import { TextInput } from "react-native-gesture-handler";
 
 const ProductScreen = ({ navigation, route }) => {
 
-  return (
-    <SafeAreaView>
-      <ScrollView style={styles.container}>
-        <View className="items-center flex-row mt-5 ml-3 mr-3 ">
-          <Text style={styles.screenTitle}>
-            Three-Sixty Pharmacy (branch name)
-          </Text>
-        </View>
-
-        <View style={styles.searchFilterCont}>
-            <View style={styles.searchCont}>
-            <Iconify
-                icon="circum:search"
-                size={22}
-                style={styles.iconSearch}
-            />
-            <TextInput placeholder="Search product" />
+    const handleProductDetailScreen= () => {
+        navigation.navigate("ProductDetailScreen");
+      };
+    return (
+        <SafeAreaView>
+        <ScrollView style={styles.container}>
+            <View className="items-center flex-row mt-5 ml-3 mr-3 ">
+            <Text style={styles.screenTitle}>
+                Three-Sixty Pharmacy (branch name)
+            </Text>
             </View>
 
-            <TouchableOpacity>
-                <View style={styles.iconFilterCont}>
-                    <Iconify icon="mi:filter" size={25} color="white" />
-                </View>
-            </TouchableOpacity>
-        </View>
-
-        <Text style={styles.productSelectionText}>Product Selection</Text>
-
-        <View style={styles.productContainer}>
-            <View style={styles.productCard}>
-                <Image
-                    source={require("../assets/img/cymer.jpg")}
-                    style={styles.image}
+            <View style={styles.searchFilterCont}>
+                <View style={styles.searchCont}>
+                <Iconify
+                    icon="circum:search"
+                    size={22}
+                    style={styles.iconSearch}
                 />
-                <Text style={styles.productName}>Zynapse 1G Tablet</Text>
-                <Text style={styles.productReq}>[ Requires Prescription ]</Text>
-                <Text style={styles.productPrice}>₱102.75</Text>
-                <View style={styles.addtocartButton}>
-                    <Text style={styles.addtocartText}>Add to cart</Text>
-                    <Iconify icon="ion:cart-outline" size={18} color="white" />
+                <TextInput placeholder="Search product" />
                 </View>
+
+                <TouchableOpacity>
+                    <View style={styles.iconFilterCont}>
+                        <Iconify icon="mi:filter" size={25} color="white" />
+                    </View>
+                </TouchableOpacity>
             </View>
-        </View>
+
+            <Text style={styles.productSelectionText}>Product Selection</Text>
+
+            <View style={styles.productContainer}>
+                <TouchableOpacity style={styles.productCard} onPress={handleProductDetailScreen}>
+                    <View style={styles.imageContainer}>
+                        <Image
+                        source={require("../assets/img/amlodipine.png")}
+                        style={styles.image}
+                        />
+                    </View>
+                    <Text style={styles.productName}>Zynapse 1G Tablet</Text>
+                    <Text style={styles.productReq}>[ Requires Prescription ]</Text>
+                    <Text style={styles.productPrice}>₱102.75</Text>
+                    <View style={styles.addtocartButton}>
+                        <Text style={styles.addtocartText}>Add to cart</Text>
+                        <Iconify icon="ion:cart-outline" size={18} color="white" />
+                    </View>
+                </TouchableOpacity>
+            </View>
 
 
-      </ScrollView>
-    </SafeAreaView>
-  );
+        </ScrollView>
+        </SafeAreaView>
+    );
 };
 export default ProductScreen;
 
@@ -133,11 +138,6 @@ const styles = StyleSheet.create({
         width: 180,
         elevation: 2
     },
-    image: {
-        width: "100%",
-        height: 90,
-        borderRadius: 2,
-    },
     productName:{
         fontSize: 14,
         fontWeight: 600,
@@ -174,7 +174,14 @@ const styles = StyleSheet.create({
         marginRight: 10,
         fontSize: 12,
         fontWeight: 500,
-
+    },
+    image: {
+        width: "100%",
+        height: 90,
+    },
+    imageContainer:{
+        width: '100%',
+        borderRadius: 2,
     },
 
  

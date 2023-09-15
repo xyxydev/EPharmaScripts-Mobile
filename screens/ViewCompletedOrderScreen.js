@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   imageContainer: {
-    flex: 1, 
+    width: '40%',
+    marginRight: 15,
   },
   productReq:{
     fontWeight: "normal",
@@ -148,7 +149,8 @@ const styles = StyleSheet.create({
   productImage: {
     height: 120, 
     width: "100%", 
-    marginLeft: -15,
+    flex: 1,
+    resizeMode: 'contain',
   },
   productInfoContainer: {
     flex: 1, 

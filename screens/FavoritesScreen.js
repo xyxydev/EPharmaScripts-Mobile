@@ -101,9 +101,12 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
     productImage:{
-        width: "100%",
+        width: "90%",
         height: 100,
         marginBottom: -10,
+        flex: 1,
+        resizeMode: 'contain',
+        alignSelf: 'center'
     },
     productName:{
         fontWeight: 600,

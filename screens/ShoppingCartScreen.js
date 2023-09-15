@@ -128,6 +128,8 @@ const styles = StyleSheet.create({
     height: 120, 
     width: "100%",
     marginLeft: -15,
+    flex: 1,
+    resizeMode: 'contain',
   },
   productInfoContainer: {
     flex: 1, 
@@ -258,4 +260,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 500,
   },
+  
 });

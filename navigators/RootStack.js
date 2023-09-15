@@ -21,6 +21,8 @@ import RateScreen from "../screens/RateScreen";
 import ViewCompletedOrderScreen from "../screens/ViewCompletedOrderScreen";
 import ToValidateScreen from "../screens/ToValidateScreen";
 import PlaceOrderScreen from "../screens/PlaceOrderScreen";
+import ProductDetailScreen from "../screens/ProductDetailScreen";
+import ApprovedProductDetailScreen from "../screens/ApprovedProductDetailScreen";
 import CartNavigatorHeader from "./CartNavigatorHeader";
 
 import { Colors } from "../components/styles";
@@ -213,6 +215,26 @@ const RootStack = () => {
             headerRight: () => <CartNavigatorHeader />,
           }}
         />
+        <Stack.Screen
+        name="ProductDetailScreen"
+        component={ProductDetailScreen}
+        options={{
+          headerTitle: () => <View></View>,
+          headerTintColor: "black",
+          headerRight: () => <CartNavigatorHeader />,
+        }}
+        />
+        <Stack.Screen
+        name="ApprovedProductDetailScreen"
+        component={ApprovedProductDetailScreen}
+        options={{
+          headerTitle: () => <View></View>,
+          headerTintColor: "black",
+          headerRight: () => <CartNavigatorHeader />,
+        }}
+        />
+        
+        
       </Stack.Navigator>
     </TailwindProvider>
   );

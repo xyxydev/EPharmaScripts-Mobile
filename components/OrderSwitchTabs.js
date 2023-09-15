@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignSelf: 'center',
         marginTop: 5,
+        marginBottom: 25
     },
     designText:{
         fontSize: 7,
