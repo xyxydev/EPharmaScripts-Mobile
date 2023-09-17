@@ -1,8 +1,15 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Iconify } from "react-native-iconify";
-import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 //screns
 import HomeScreen from "../screens/HomeScreen";
@@ -13,7 +20,7 @@ import ShoppingCartScreen from "../screens/ShoppingCartScreen";
 import { Colors } from "../components/styles"; //import colors
 
 //statusbar state
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from "@react-navigation/native";
 
 const { red, dark } = Colors;
 
@@ -26,56 +33,57 @@ const styles = StyleSheet.create({
   },
 });
 
-const CustomHeaderTitle = () => {  
+const CustomHeaderTitle = () => {
   const navigation = useNavigation();
   const handleNotificationPress = () => {
     // Navigate to notification screen when TouchableOpacity of notification icon is pressed
-    navigation.navigate('NotificationScreen');
+    navigation.navigate("NotificationScreen");
   };
   const handleProfilePress = () => {
     // Navigate to profile screen when TouchableOpacity of profile icon is pressed
-    navigation.navigate('ProfileScreen');
+    navigation.navigate("ProfileScreen");
   };
   const handleEditProfilePress = () => {
     // Navigate to edit profile screen when TouchableOpacity of edit profile button is pressed ion:notifications
-    navigation.navigate('EditProfileScreen');
+    navigation.navigate("EditProfileScreen");
   };
   const handleMenuPress = () => {
     // Navigate to edit profile screen when TouchableOpacity of edit profile button is pressed
-    navigation.navigate('MenuScreen');
+    navigation.navigate("MenuScreen");
   };
 
   return (
     <View className="flex flex-row flex-wrap">
-
       <View className="w-1/2 flex flex-row items-center">
         <TouchableOpacity onPress={handleMenuPress}>
           <View>
-            <Iconify icon="heroicons-outline:menu-alt-2" size={24} color="black" />
+            <Iconify
+              icon="heroicons-outline:menu-alt-2"
+              size={24}
+              color="black"
+            />
           </View>
-        </TouchableOpacity>  
+        </TouchableOpacity>
       </View>
 
-      <View className="w-1/2 mt-2 flex-row flex-wrap justify-end">    
+      <View className="w-1/2 mt-2 flex-row flex-wrap justify-end">
         <TouchableOpacity onPress={handleNotificationPress}>
-        <Iconify icon="ion:notifications" size={24} color="#EC6F56" />
-        </TouchableOpacity> 
+          <Iconify icon="ion:notifications" size={24} color="#EC6F56" />
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={handleProfilePress}>
-          <View className="w-8 h-8 ml-5" style={{marginTop: -4}}>
+          <View className="w-8 h-8 ml-5" style={{ marginTop: -4 }}>
             <View className="">
-                <Image
-                  source={require("../assets/img/cymer.jpg")}
-                  className="w-full h-full rounded-full"
-                />
+              <Image
+                source={require("../assets/img/cymer.jpg")}
+                className="w-full h-full rounded-full"
+              />
             </View>
           </View>
         </TouchableOpacity>
       </View>
     </View>
-
-
-    );
+  );
 };
 
 const TabNavigator = () => {
@@ -91,7 +99,7 @@ const TabNavigator = () => {
           marginLeft: 15,
           marginRight: 15,
           elevation: 1, // This property controls the shadow on Android
-          shadowColor: '#000', // Set the shadow color
+          shadowColor: "#000", // Set the shadow color
           shadowOpacity: 0.3, // Set the shadow opacity
           shadowRadius: 5, // Set the shadow radius
           shadowOffset: {
@@ -100,19 +108,23 @@ const TabNavigator = () => {
           },
         },
       }}
-      >
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           headerTitle: () => <CustomHeaderTitle />,
           headerStyle: {
-            backgroundColor: '#F5F5F5',
+            backgroundColor: "#F5F5F5",
           },
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>
-              <Iconify icon="iconamoon:home-light" size={focused ? 30 : 27}  color={focused ? "#EC6F56" : "#8E8E8E"} />
+              <Iconify
+                icon="iconamoon:home-light"
+                size={focused ? 30 : 27}
+                color={focused ? "#EC6F56" : "#8E8E8E"}
+              />
             </View>
           ),
         }}
@@ -123,12 +135,16 @@ const TabNavigator = () => {
         options={{
           headerTitle: () => <CustomHeaderTitle />,
           headerStyle: {
-            backgroundColor: '#F5F5F5',
-        },
+            backgroundColor: "#F5F5F5",
+          },
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>
-              <Iconify icon="ion:cart-outline" size={focused ? 30 : 29}  color={focused ? "#EC6F56" : "#8E8E8E"} />
+              <Iconify
+                icon="ion:cart-outline"
+                size={focused ? 30 : 29}
+                color={focused ? "#EC6F56" : "#8E8E8E"}
+              />
             </View>
           ),
         }}
@@ -139,12 +155,16 @@ const TabNavigator = () => {
         options={{
           headerTitle: () => <CustomHeaderTitle />,
           headerStyle: {
-            backgroundColor: '#F5F5F5',
-        },
+            backgroundColor: "#F5F5F5",
+          },
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>
-              <Iconify icon="solar:notebook-outline" size={focused ? 30 : 27}  color={focused ? "#EC6F56" : "#8E8E8E"} />
+              <Iconify
+                icon="solar:notebook-outline"
+                size={focused ? 30 : 27}
+                color={focused ? "#EC6F56" : "#8E8E8E"}
+              />
             </View>
           ),
         }}
@@ -155,14 +175,22 @@ const TabNavigator = () => {
         options={{
           headerTitle: () => (
             <View style={{ marginLeft: 9, marginBottom: 2 }}>
-              <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold'}}>Messages</Text>
+              <Text
+                style={{ color: "black", fontSize: 20, fontWeight: "bold" }}
+              >
+                Messages
+              </Text>
             </View>
           ),
-          headerShown: true,
+          headerShown: false,
           tabBarLabel: "",
           tabBarIcon: ({ color, size, focused }) => (
             <View>
-              <Iconify icon="ant-design:message-outlined" size={focused ? 30 : 27}  color={focused ? "#EC6F56" : "#8E8E8E"} />
+              <Iconify
+                icon="ant-design:message-outlined"
+                size={focused ? 30 : 27}
+                color={focused ? "#EC6F56" : "#8E8E8E"}
+              />
             </View>
           ),
         }}

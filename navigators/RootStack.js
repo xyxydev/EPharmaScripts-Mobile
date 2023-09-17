@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View } from "react-native";
+import { View, TouchableOpacity, Text, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -24,9 +24,12 @@ import PlaceOrderScreen from "../screens/PlaceOrderScreen";
 import ProductDetailScreen from "../screens/ProductDetailScreen";
 import ApprovedProductDetailScreen from "../screens/ApprovedProductDetailScreen";
 import CartNavigatorHeader from "./CartNavigatorHeader";
+import ChatScreen from "../screens/ChatScreen";
+import MessageScreen from "../screens/MessageScreen";
 
 import { Colors } from "../components/styles";
 import { TailwindProvider } from "tailwindcss-react-native";
+import { Iconify } from "react-native-iconify";
 
 const { tertiary, white, red, bodyGray } = Colors;
 
@@ -85,7 +88,7 @@ const RootStack = () => {
             headerShown: false,
           }}
         />
-        
+
         <Stack.Screen
           name="NotificationScreen"
           component={NotificationScreen}
@@ -216,25 +219,56 @@ const RootStack = () => {
           }}
         />
         <Stack.Screen
-        name="ProductDetailScreen"
-        component={ProductDetailScreen}
-        options={{
-          headerTitle: () => <View></View>,
-          headerTintColor: "black",
-          headerRight: () => <CartNavigatorHeader />,
-        }}
+          name="ProductDetailScreen"
+          component={ProductDetailScreen}
+          options={{
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
+            headerRight: () => <CartNavigatorHeader />,
+          }}
         />
         <Stack.Screen
-        name="ApprovedProductDetailScreen"
-        component={ApprovedProductDetailScreen}
-        options={{
-          headerTitle: () => <View></View>,
-          headerTintColor: "black",
-          headerRight: () => <CartNavigatorHeader />,
-        }}
+          name="ApprovedProductDetailScreen"
+          component={ApprovedProductDetailScreen}
+          options={{
+            headerTitle: () => <View></View>,
+            headerTintColor: "black",
+            headerRight: () => <CartNavigatorHeader />,
+          }}
         />
-        
-        
+
+        <Stack.Screen
+          name="ChatScreen"
+          component={ChatScreen}
+          options={({ route }) => ({
+            title: route.params.name,
+            headerStyle: {
+              backgroundColor: "#EC6F56", // Set the background color to orange
+            },
+            headerTitleStyle: {
+              color: "white", // Set the text color to white
+              fontWeight: "bold", // Make the text bold
+              fontSize: 24,
+            },
+            headerTintColor: "white", // Set the back button color to white
+
+            headerRight: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                {/* Display the recipient's avatar */}
+                <Image
+                  source={require("../assets/img/cymer.jpg")}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20, // Make it circular
+                    marginRight: 10,
+                  }}
+                />
+                {/* You can add other header elements here if needed */}
+              </View>
+            ),
+          })}
+        />
       </Stack.Navigator>
     </TailwindProvider>
   );
