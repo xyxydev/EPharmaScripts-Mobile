@@ -1,13 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "./src/api/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TailwindProvider } from "tailwindcss-react-native";
 import RootStack from "./navigators/RootStack"; // Your main app stack
 import AuthStack from "./navigators/AuthStack"; // Your authentication stack (Login and Signup)
+import UserIdContext from "./src/api/userIDContext";
 
 const App = () => {
   const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     // Check if a token is stored in AsyncStorage
@@ -15,6 +17,15 @@ const App = () => {
       const token = await AsyncStorage.getItem("token");
       if (token) {
         setUserToken(token);
+
+        // Retrieve userId from AsyncStorage
+        const storedUserId = await AsyncStorage.getItem("userId");
+
+        if (storedUserId) {
+          setUserId(storedUserId); // Set userId in the component's state
+          console.log("UserID is", storedUserId);
+          authContext.signIn(token);
+        }
       }
     };
 
@@ -41,11 +52,13 @@ const App = () => {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <TailwindProvider>
-        <NavigationContainer>
-          {userToken ? <RootStack /> : <AuthStack />}
-        </NavigationContainer>
-      </TailwindProvider>
+      <UserIdContext.Provider value={userId}>
+        <TailwindProvider>
+          <NavigationContainer>
+            {userToken ? <RootStack /> : <AuthStack />}
+          </NavigationContainer>
+        </TailwindProvider>
+      </UserIdContext.Provider>
     </AuthContext.Provider>
   );
 };

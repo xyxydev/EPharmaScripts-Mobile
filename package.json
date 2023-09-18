@@ -9,13 +9,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@firebase/firestore": "^4.2.0",
     "@iconify/icons-mdi": "^1.2.47",
-    "@react-native-async-storage/async-storage": "^1.19.3",
+    "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/checkbox": "^0.5.16",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
+    "axios": "^1.5.0",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "expo": "^48.0.0",

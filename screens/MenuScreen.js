@@ -9,7 +9,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Iconify } from "react-native-iconify";
 import React, { useContext } from "react";
-import { AuthContext } from "../src/api/context"; // Import your authentication context
+import { AuthContext } from "../src/api/context";
 
 const MenuScreen = () => {
   const navigation = useNavigation();

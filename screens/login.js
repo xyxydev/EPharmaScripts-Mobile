@@ -40,7 +40,7 @@ const { orange } = Colors;
 import KeyboardAvoidingWrapper from "./../components/KeyboardAvoidingWrapper";
 
 //firebase
-import { authentication } from "../firebase/firebase";
+// import { authentication } from "../firebase/firebase";
 import { auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../src/api/context";
@@ -52,7 +52,15 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const { signIn } = React.useContext(AuthContext);
-
+  const [userId, setUserId] = useState("");
+  useEffect(() => {
+    // Check if there is a currently authenticated user
+    if (auth.currentUser) {
+      // Get the user's UID
+      const userUid = auth.currentUser.uid;
+      setUserId(userUid);
+    }
+  }, []);
   const SignInUser = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(
