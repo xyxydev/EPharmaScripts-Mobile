@@ -14,35 +14,47 @@ import { Colors } from "../components/styles";
 import { StatusBar } from "expo-status-bar";
 import { useUserId } from "../src/api/userIDContext";
 import axios from "axios";
+import { auth } from "../firebase/firebase";
 
 const { bodyGray } = Colors;
 const { orange } = Colors;
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
-    const userId = useUserId(); // Assuming useUserId() returns a valid user ID
-  const [user, setUser] = useState("");
-
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  // const userId = useUserId(); // Assuming useUserId() returns a valid user ID
+  const [user, setuser] = useState("");
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:5001/e-pharmascripts/us-central1/app/api/mobile/get/users/${userId}`
-        );
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const userId = user.uid;
+        console.log("User ID:", userId);
+        // Make the Axios request with the user ID
 
-        if (response.data.status === "Success") {
-          setUser(response.data.msg);
-          console.log("User:", response.data.msg);
-        } else {
-          console.log("User not found");
-        }
-      } catch (error) {
-        console.error("Error while fetching user:", error);
+        const fetchUser = async () => {
+          try {
+            const response = await axios.get(
+              `http://10.0.2.2:5001/e-pharmascripts/us-central1/app/api/mobile/get/fetchData/users/${userId}`
+            );
+            if (response.data.status === "Success") {
+              setuser(response.data.msg);
+              console.log("success");
+            } else {
+              console.log("user not found");
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        fetchUser();
+        return () => unsubscribe();
+      } else {
+        // No user is signed in.
+        console.log("No user signed in");
       }
-    };
-
-    fetchUser();
-  }, [userId]);
+    });
+  }, []);
 
   const handleEditProfileScreen = () => {
     // Navigate to my order screen
@@ -61,10 +73,13 @@ const ProfileScreen = () => {
           />
         </View>
         <View style={styles.nameGmailButton}>
-          <Text style={styles.name}>Name: {user.firstName}</Text>
-          <Text style={styles.gmail}>xyxypinakurat@gmail.com</Text>
+          <Text style={styles.name}>
+            {user.firstName} {user.lastName}
+          </Text>
+
+          <Text style={styles.gmail}>{user.email}</Text>
           <Text>
-            User ID: {userId ? userId : "Not logged in"}{" "}
+            {/* User ID: {userId ? userId : "Not logged in"}{" "} */}
             {/* Display the user ID */}
           </Text>
           <TouchableOpacity onPress={handleEditProfileScreen}>

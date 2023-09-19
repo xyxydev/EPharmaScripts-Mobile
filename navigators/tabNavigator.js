@@ -16,6 +16,8 @@ import HomeScreen from "../screens/HomeScreen";
 import MessageScreen from "../screens/MessageScreen";
 import DiaryMaintenanceScreen from "../screens/DiaryMaintenanceScreen";
 import ShoppingCartScreen from "../screens/ShoppingCartScreen";
+// import TestScreen from "../screens/TestScreen";
+// import SampleScreen from "../screens/apitestscreen";
 
 import { Colors } from "../components/styles"; //import colors
 
@@ -195,6 +197,52 @@ const TabNavigator = () => {
           ),
         }}
       />
+      {/* <Tab.Screen
+        name="TestScreen"
+        component={TestScreen}
+        options={{
+          headerTitle: () => (
+            <View style={{ marginLeft: 9, marginBottom: 2 }}>
+              <Text
+                style={{ color: "black", fontSize: 20, fontWeight: "bold" }}
+              >
+                Messages
+              </Text>
+            </View>
+          ),
+          headerShown: false,
+          tabBarLabel: "",
+          tabBarIcon: ({ color, size, focused }) => (
+            <View>
+              <Iconify
+                icon="grommet-icons:test"
+                size={focused ? 30 : 27}
+                color={focused ? "#EC6F56" : "#8E8E8E"}
+              />
+            </View>
+          ),
+        }}
+      /> */}
+      {/* <Tab.Screen
+        name="SampleScreen"
+        component={SampleScreen}
+        options={{
+          headerTitle: () => <CustomHeaderTitle />,
+          headerStyle: {
+            backgroundColor: "#F5F5F5",
+          },
+          tabBarLabel: "",
+          tabBarIcon: ({ color, size, focused }) => (
+            <View>
+              <Iconify
+                icon="material-symbols:sound-sampler-rounded"
+                size={focused ? 30 : 27}
+                color={focused ? "#EC6F56" : "#8E8E8E"}
+              />
+            </View>
+          ),
+        }}
+      /> */}
     </Tab.Navigator>
   );
 };
