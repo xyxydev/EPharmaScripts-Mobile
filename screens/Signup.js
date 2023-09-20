@@ -3,7 +3,13 @@ import { StatusBar } from "expo-status-bar";
 import { Checkbox } from "expo-checkbox";
 import { Formik } from "formik";
 import { Octicons, Ionicons } from "@expo/vector-icons";
-import { ScrollView, View, TouchableOpacity, TextInput, Text } from "react-native";
+import {
+  ScrollView,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Text,
+} from "react-native";
 import {
   StyledContainer,
   InnerContainer,
@@ -37,14 +43,27 @@ import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 //firebase
 import { authentication, db } from "../firebase/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, getDocs, doc, setDoc, addDoc, serverTimestamp, query, orderBy, getDoc, updateDoc, where, getFirestore } from 'firebase/firestore/lite';
+import {
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  addDoc,
+  serverTimestamp,
+  query,
+  orderBy,
+  getDoc,
+  updateDoc,
+  where,
+  getFirestore,
+} from "firebase/firestore/lite";
 
 const Signup = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date(2000, 0, 1));
   // State for the checkbox
-  const [isChecked, setIsChecked] = useState(false); 
+  const [isChecked, setIsChecked] = useState(false);
 
   //actual date of birth to be sent
   const [dob, setDob] = useState();
@@ -59,37 +78,37 @@ const Signup = ({ navigation }) => {
   const showDatePicker = () => {
     setShow(true);
   };
-    //text input states
-    const [firstName, setFName] = useState('');
-    const [lastName, setLName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setconfirmPassword] = useState('');
-    //error message
-    const [error, setError] = useState(null);
+  //text input states
+  const [firstName, setFName] = useState("");
+  const [lastName, setLName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setconfirmPassword] = useState("");
+  //error message
+  const [error, setError] = useState(null);
 
-    // State variable for error message
-    useEffect(() => {
-      let timeoutId;
-      if (error) {
-        // Set a timeout to clear the error message after 3 seconds
-        timeoutId = setTimeout(() => {
-          setError(null);
-        }, 4000);
-      }
-      // Clear the timeout when the component unmounts or the error state changes
-      return () => clearTimeout(timeoutId);
-    }, [error]);
+  // State variable for error message
+  useEffect(() => {
+    let timeoutId;
+    if (error) {
+      // Set a timeout to clear the error message after 3 seconds
+      timeoutId = setTimeout(() => {
+        setError(null);
+      }, 4000);
+    }
+    // Clear the timeout when the component unmounts or the error state changes
+    return () => clearTimeout(timeoutId);
+  }, [error]);
 
-    // Regular expressions for validation
-    const nameRegex = /^[A-Za-z]+$/; // Only alphabetic characters allowed
-    const emailRegex = /^\S+@\S+\.\S+$/; // Email format validation
-    const phoneRegex = /^09\d{9}$/; // Phone number format validation: starts with 09, followed by 9 digits
-    const passwordRegex = /^[A-Za-z0-9]{8,}$/; // At least 8 characters or digits
+  // Regular expressions for validation
+  const nameRegex = /^[A-Za-z]+$/; // Only alphabetic characters allowed
+  const emailRegex = /^\S+@\S+\.\S+$/; // Email format validation
+  const phoneRegex = /^09\d{9}$/; // Phone number format validation: starts with 09, followed by 9 digits
+  const passwordRegex = /^[A-Za-z0-9]{8,}$/; // At least 8 characters or digits
 
-    //Create user
-    const RegisterUser = async () => {
+  //Create user
+  const RegisterUser = async () => {
     const fName = firstName;
     const lName = lastName;
     const userEmail = email;
@@ -99,27 +118,27 @@ const Signup = ({ navigation }) => {
     const userCreatedAt = serverTimestamp(); // Add the createdAt field with the current server timestamp
 
     const userData = {};
-    
+
     //check if terms and conditions is checked
     if (!isChecked) {
-      setError('Please agree to the Terms & Conditions');
+      setError("Please agree to the Terms & Conditions");
       return;
     }
     // Check if email already exists
-    const usersRef = collection(db, 'users');
-    const emailExistsQuery = query(usersRef, where('email', '==', userEmail));
-    
+    const usersRef = collection(db, "users");
+    const emailExistsQuery = query(usersRef, where("email", "==", userEmail));
+
     try {
       const emailExistsSnapshot = await getDocs(emailExistsQuery);
-      
+
       if (!emailExistsSnapshot.empty) {
-        setError('Email address already exists');
+        setError("Email address already exists");
         return;
       }
 
       // ... continue with the rest of the code ...
     } catch (error) {
-      console.error('Error checking email existence:', error);
+      console.error("Error checking email existence:", error);
       // Handle the error as needed
     }
 
@@ -127,68 +146,71 @@ const Signup = ({ navigation }) => {
     if (nameRegex.test(fName)) {
       userData.firstName = fName;
     } else {
-      setError('Invalid First Name');
+      setError("Invalid First Name");
       return;
     }
 
     if (nameRegex.test(lName)) {
       userData.lastName = lName;
     } else {
-      setError('Invalid Last Name');
+      setError("Invalid Last Name");
       return;
     }
-    
+
     if (emailRegex.test(userEmail)) {
       userData.email = userEmail;
     } else {
-      setError('Invalid email address');
+      setError("Invalid email address");
       return;
     }
 
     if (phoneRegex.test(userPhone)) {
       userData.phone = userPhone;
     } else {
-      setError('Invalid phone number');
+      setError("Invalid phone number");
       return;
     }
 
-      // Validate the password
-      if (passwordRegex.test(userPassword)) {
-        userData.password = userPassword;
-      } else {
-        setError('Password should be at least 8 characters');
-        return;
-      }
+    // Validate the password
+    if (passwordRegex.test(userPassword)) {
+      userData.password = userPassword;
+    } else {
+      setError("Password should be at least 8 characters");
+      return;
+    }
 
-      // Validate the confirm password
-      if (userPassword === userconfirmPassword) {
-        userData.confirmPassword = userconfirmPassword;
-      } else {
-        setError('Password do not match');
-        return;
-      }
+    // Validate the confirm password
+    if (userPassword === userconfirmPassword) {
+      userData.confirmPassword = userconfirmPassword;
+    } else {
+      setError("Password do not match");
+      return;
+    }
 
     userData.dateOfBirth = dob;
     userData.createdAt = userCreatedAt;
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(authentication, userEmail, userPassword);
+      const userCredential = await createUserWithEmailAndPassword(
+        authentication,
+        userEmail,
+        userPassword
+      );
       const uid = userCredential.user.uid; // Get the user ID from the UserCredential object
-  
+
       const db = getFirestore(); // Get the Firestore instance
-      const usersCollection = collection(db, 'users'); // Replace 'users' with your actual collection name
-  
+      const usersCollection = collection(db, "users"); // Replace 'users' with your actual collection name
+
       // Set the user ID as the document ID when adding the user to Firestore
       const userRef = doc(usersCollection, uid);
       await setDoc(userRef, userData);
-  
-      console.log('User added successfully with ID:', uid);
-      setError('User added successfully');
-    } catch (error) {
-      console.error('Error adding user:', error);
-      setError('Error adding user');
-    }
 
+      console.log("User added successfully with ID:", uid);
+      setError("User added successfully");
+    } catch (error) {
+      console.error("Error adding user:", error);
+      setError("Error adding user");
+    }
   };
 
   return (
@@ -201,10 +223,12 @@ const Signup = ({ navigation }) => {
               resizeMode="cover"
               source={require("../assets/img/e-logo.png")}
             /> */}
-            <Subtitle style={{ marginTop: 20, marginBottom: 5 }}>Welcome to E-PharmaScripts</Subtitle>
-              <View style={{ flex: 1, alignItems: "center"}}>
-                {error && <MsgBox style={{ marginBottom: -15}}>{error}</MsgBox>}
-              </View>
+            <Subtitle style={{ marginTop: 20, marginBottom: 5 }}>
+              Welcome to E-PharmaScripts
+            </Subtitle>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              {error && <MsgBox style={{ marginBottom: -15 }}>{error}</MsgBox>}
+            </View>
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
@@ -240,7 +264,7 @@ const Signup = ({ navigation }) => {
                     placeholder="First Name"
                     placeholderTextColor={darkLight}
                     // onChangeText={handleChange("firstname")}
-                    onChangeText={text=>setFName(text)}
+                    onChangeText={(text) => setFName(text)}
                     onBlur={handleBlur("firstname")}
                     value={firstName}
                   />
@@ -250,7 +274,7 @@ const Signup = ({ navigation }) => {
                     placeholder="Last Name"
                     placeholderTextColor={darkLight}
                     // onChangeText={handleChange("lastname")}
-                    onChangeText={text=>setLName(text)}
+                    onChangeText={(text) => setLName(text)}
                     onBlur={handleBlur("lastname")}
                     value={lastName}
                   />
@@ -260,7 +284,7 @@ const Signup = ({ navigation }) => {
                     placeholder="Email"
                     placeholderTextColor={darkLight}
                     // onChangeText={handleChange("email")}
-                    onChangeText={email=>setEmail(email)}
+                    onChangeText={(email) => setEmail(email)}
                     onBlur={handleBlur("email")}
                     value={email}
                     keyboardType="email-address"
@@ -270,7 +294,7 @@ const Signup = ({ navigation }) => {
                     placeholder="Phone Number"
                     placeholderTextColor={darkLight}
                     // onChangeText={handleChange("phone")}
-                    onChangeText={number=>setPhone(number)}
+                    onChangeText={(number) => setPhone(number)}
                     onBlur={handleBlur("phone")}
                     value={phone}
                   />
@@ -285,7 +309,7 @@ const Signup = ({ navigation }) => {
                     isDate={true}
                     editable={false}
                     showDatePicker={showDatePicker}
-                    selectionColor="black" 
+                    selectionColor="black"
                   />
                   <MyTextInput
                     icon="lock"
@@ -293,7 +317,7 @@ const Signup = ({ navigation }) => {
                     placeholder="Enter Password"
                     placeholderTextColor={darkLight}
                     // onChangeText={handleChange("password")}
-                    onChangeText={text=>setPassword(text)}
+                    onChangeText={(text) => setPassword(text)}
                     onBlur={handleBlur("password")}
                     value={password}
                     secureTextEntry={hidePassword}
@@ -307,7 +331,7 @@ const Signup = ({ navigation }) => {
                     placeholder="Confirm Password"
                     placeholderTextColor={darkLight}
                     // onChangeText={handleChange("confirmPassword")}
-                    onChangeText={text=>setconfirmPassword(text)}
+                    onChangeText={(text) => setconfirmPassword(text)}
                     onBlur={handleBlur("confirmPassword")}
                     value={confirmPassword}
                     secureTextEntry={hidePassword}
@@ -315,16 +339,41 @@ const Signup = ({ navigation }) => {
                     hidePassword={hidePassword}
                     setHidePassword={setHidePassword}
                   />
-                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10, }}>
-                    <Checkbox color={orange} value={isChecked} onValueChange={setIsChecked} />
-                    <Text style={{ marginLeft: 5, fontSize: 14}}>I agree to the </Text>
-                    <TextLink onPress={() => navigation.navigate("TermsConditions")}>
-                      <TextLinkContent style={{ fontSize: 14, textDecorationLine: 'underline'}}>Terms & Conditions</TextLinkContent>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginTop: 10,
+                    }}
+                  >
+                    <Checkbox
+                      color={orange}
+                      value={isChecked}
+                      onValueChange={setIsChecked}
+                    />
+                    <Text style={{ marginLeft: 5, fontSize: 14 }}>
+                      I agree to the{" "}
+                    </Text>
+                    <TextLink
+                      onPress={() => navigation.navigate("TermsConditions")}
+                    >
+                      <TextLinkContent
+                        style={{
+                          fontSize: 14,
+                          textDecorationLine: "underline",
+                        }}
+                      >
+                        Terms & Conditions
+                      </TextLinkContent>
                     </TextLink>
                   </View>
 
-                  <StyledButton onPress={RegisterUser} style={{ marginTop: 20 }}>
-                    <ButtonText >Register</ButtonText>
+                  <StyledButton
+                    onPress={RegisterUser}
+                    style={{ marginTop: 20 }}
+                  >
+                    <ButtonText>Register</ButtonText>
                   </StyledButton>
                   <ExtraView>
                     <Extratext>Already have an account? </Extratext>
@@ -360,7 +409,6 @@ const MyTextInput = ({
           {...props}
           placeholderTextColor="black"
           selectionColor={orange} // Set the caret color to red
-      
         />
       )}
       {isDate && (

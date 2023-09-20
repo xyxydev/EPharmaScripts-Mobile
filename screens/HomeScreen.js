@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Iconify } from "react-native-iconify";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +17,7 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { filterData } from "../components/data";
-
+import { fetchData } from "../database/fetchData";
 const { width, height } = Dimensions.get("window");
 
 // Calculate the image dimensions based on screen size
@@ -26,23 +26,31 @@ const imageHeight = height * 0.18; // Adjust as needed
 const cardWidth = (width - 30) / 2;
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const [indexCheck, setIndexCheck] = useState("0");
+  const [mainPharmacy, setPharmacy] = useState([]);
+  useEffect(() => {
+    const fetchPharmacyData = async () => {
+      try {
+        const pharmacyData = await fetchData("pharmacy");
+        // console.log("Pharmacy Data:", pharmacyData);
+        setPharmacy(pharmacyData);
+        // console.log("pharmacyData", pharmacyData);
+      } catch (error) {
+        console.error("Error fetching pharmacy data:", error);
+      }
+    };
 
-  const handleBranches = () => {
-    // Navigate to notification screen when TouchableOpacity of notification icon is pressed mi:filter
-
-    navigation.navigate("BranchesScreen");
-  };
+    fetchPharmacyData(); // Call the function to fetch data
+  }, []);
 
   const renderPharmacy = ({ item }) => {
     return (
       <View style={[styles.pharmacyContainer, { width: cardWidth }]}>
         <View style={styles.pharmacyCard}>
-          <Image style={styles.image} source={item.image} />
-          <Text style={styles.pharmacyName}>{item.name}</Text>
+          <Image style={styles.image} source={{ uri: item.img }} />
+          <Text style={styles.pharmacyName}>{item.companyName}</Text>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("BranchesScreen", { name: item.name })
+              navigation.navigate("BranchesScreen", { name: item.companyName})
             }
           >
             <View style={styles.viewButton}>
@@ -143,9 +151,8 @@ const HomeScreen = () => {
             <FlatList
               numColumns={2} // Display two items per row
               scrollEnabled={false}
-              data={filterData}
-              keyExtractor={(item) => item.id.toString()}
-              extraData={indexCheck}
+              data={mainPharmacy}
+              keyExtractor={(item) => item.id}
               renderItem={renderPharmacy}
             />
           </View>

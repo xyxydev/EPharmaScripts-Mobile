@@ -13,47 +13,43 @@ import { Iconify } from "react-native-iconify";
 import { Colors } from "../components/styles";
 import { StatusBar } from "expo-status-bar";
 import { useUserId } from "../src/api/userIDContext";
-import axios from "axios";
-import { auth } from "../firebase/firebase";
-
+import { authentication } from "../firebase/firebase";
+import { getAuthToken } from "../src/api/authToken";
+import { db } from "../firebase/firebase";
+import { collection, doc, getDoc } from "firebase/firestore/lite";
+import { fetchUserData } from "../database/backend";
 const { bodyGray } = Colors;
 const { orange } = Colors;
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  // const userId = useUserId(); // Assuming useUserId() returns a valid user ID
-  const [user, setuser] = useState("");
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        const userId = user.uid;
-        console.log("User ID:", userId);
-        // Make the Axios request with the user ID
+  const userId = useUserId(); // Assuming useUserId() returns a valid user ID
+  const [user, setUser] = useState(null);
 
-        const fetchUser = async () => {
-          try {
-            const response = await axios.get(
-              `http://10.0.2.2:5001/e-pharmascripts/us-central1/app/api/mobile/get/fetchData/users/${userId}`
-            );
-            if (response.data.status === "Success") {
-              setuser(response.data.msg);
-              console.log("success");
-            } else {
-              console.log("user not found");
-            }
-          } catch (error) {
-            console.log(error);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const authToken = await getAuthToken();
+        const userId = authToken.userId; // Get userId from AsyncStorage
+
+        if (userId) {
+          const userData = await fetchUserData(userId, "users");
+          // console.log("userId", userId);
+          if (userData) {
+            setUser(userData);
+            // console.log("userdata", userData);
           }
-        };
-        fetchUser();
-        return () => unsubscribe();
-      } else {
-        // No user is signed in.
-        console.log("No user signed in");
+        }
+      } catch (error) {
+        console.log("error in profilescreen");
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
       }
-    });
+    };
+
+    fetchData();
   }, []);
 
   const handleEditProfileScreen = () => {
@@ -67,21 +63,31 @@ const ProfileScreen = () => {
         <StatusBar backgroundColor="white" />
         <Text style={styles.title}>Personal Information</Text>
         <View style={styles.pic_cont}>
-          <Image
-            source={require("../assets/img/cymer.jpg")}
-            className="w-full h-full rounded-full"
-          />
+          {user && user.img ? (
+            <Image
+              source={{ uri: user.img }}
+              style={{ width: 100, height: 100, borderRadius: 50 }}
+            />
+          ) : (
+            <Image
+              source={require("../assets/img/default-image.jpg")}
+              className="w-full h-full rounded-full"
+            />
+          )}
         </View>
         <View style={styles.nameGmailButton}>
-          <Text style={styles.name}>
-            {user.firstName} {user.lastName}
-          </Text>
-
-          <Text style={styles.gmail}>{user.email}</Text>
-          <Text>
-            {/* User ID: {userId ? userId : "Not logged in"}{" "} */}
-            {/* Display the user ID */}
-          </Text>
+          {isLoading ? (
+            <Text>Loading...</Text>
+          ) : user ? (
+            <>
+              <Text style={styles.name}>
+                {user.firstName} {user.lastName}
+              </Text>
+              <Text style={styles.gmail}>{user.email}</Text>
+            </>
+          ) : (
+            <Text>User data not available</Text>
+          )}
           <TouchableOpacity onPress={handleEditProfileScreen}>
             <Text style={styles.editButton}>Edit Profile</Text>
           </TouchableOpacity>

@@ -1,82 +1,131 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
   Text,
   SafeAreaView,
   Image,
-  ScrollView,
-  Button,
-  Alert,
   TouchableOpacity,
+  TextInput,
   Dimensions,
+  ScrollView,
+  FlatList,
 } from "react-native";
 import { Iconify } from "react-native-iconify";
-import { TextInput } from "react-native-gesture-handler";
+import firebase from "firebase/app";
+import { collection, query, where, getDocs } from "firebase/firestore/lite";
+import { db } from "../firebase/firebase";
+import { fetchBranchesData } from "../database/backend";
+const { width, height } = Dimensions.get("window");
 
+// Calculate the image dimensions based on screen size
+const imageWidth = width; //Adjust as needed
+const imageHeight = height * 0.18; // Adjust as needed
+const cardWidth = (width - 30) / 2;
 const BranchesScreen = ({ navigation, route }) => {
+  const [branches, setBranches] = useState([]);
+  const branchName = route.params?.name;
 
-  const handleProductScreen= () => {
-    navigation.navigate("ProductScreen");
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        console.log(branchName);
+        const branchesData = await fetchBranchesData(
+          branchName,
+          "sellers",
+          "companyName"
+        );
+
+        setBranches(branchesData);
+      } catch (error) {
+        console.error("Error fetching branches:", error);
+      }
+    };
+
+    fetchBranches();
+  }, [branchName]);
+
+  console.log("sellers");
+  const handleProductScreen = () => {
+    navigation.navigate("ProductScreen", {
+      name: item.companyName,
+      branch: item.branch,
+    });
   };
 
+  const renderBranchItem = ({ item }) => (
+    <View style={[styles.pharmacyContainer, { width: cardWidth }]}>
+      <View style={styles.pharmacyCard}>
+        <Text style={styles.ratingText}>{item.rating}★</Text>
+        <Image source={{ uri: item.img }} style={styles.image} />
+        <Text style={styles.pharmacyName}>{item.companyName}</Text>
+        <Text style={styles.branchName}>{`(${item.branch})`}</Text>
+        <View style={styles.viewButtonContainer}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("ProductScreen", {
+                name: item.companyName,
+                branch: item.branch,
+                sellerId: item.id,
+              })
+            }
+          >
+            <View style={styles.viewButton}>
+              <Text style={styles.viewButtonText}>View Pharmacy</Text>
+              <Iconify icon="ic:round-greater-than" size={15} color="#EC6F56" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View className="items-center flex-row mt-5 ml-3 mr-3 ">
-          <Text className="pl-2 text-xl font-bold text-gray-800">
-            {route.params?.name}
-          </Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>{route.params?.name}</Text>
         </View>
 
-        {/* <View className="border-b-2 border-gray-300 mt-5 ml-3 mr-3" /> */}
-        <View className="items-center flex-row mt-5 ml-3 mr-3 ">
-          <View style={styles.searchFilterCont}>
-            <View style={styles.searchCont}>
-              <Iconify
-                icon="circum:search"
-                size={22}
-                style={styles.iconSearch}
-              />
-              <TextInput placeholder="Search branch" />
-            </View>
+        <View style={styles.searchFilterCont}>
+          <View style={styles.searchCont}>
+            <Iconify icon="circum:search" size={22} style={styles.iconSearch} />
+            <TextInput placeholder="Search branch" style={styles.inputSearch} />
           </View>
         </View>
-        <Text className="text-base font-semibold pl-5 pt-3 text-gray-800">
-          Branch Selection
-        </Text>
-        <View className="flex flex-row flex-wrap p-2">
-          {/**Pharmacy containers code */}
-          <View className="w-1/2 p-2 ">
-            <View style={styles.pharmacyCard}>
-              <Text className="pb-2 text-xs">4.1★</Text>
-              <Image
-                source={require("../assets/img/cymer.jpg")}
-                style={styles.image}
-              />
-              <Text style={styles.pharmacyName}>Three-Xymer Pharmacy</Text>
-              <TouchableOpacity onPress={handleProductScreen}
-              >
-                <View>
-                  <View style={styles.viewButton}>
-                    <Text style={styles.viewButtonText}>View Pharmacy</Text>
-                    <Iconify
-                      icon="ic:round-greater-than"
-                      size={15}
-                      color="#EC6F56"
-                    />
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+
+        <Text style={styles.branchSelectionText}>Branch Selection</Text>
+
+        <FlatList
+          data={branches}
+          scrollEnabled={false}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          renderItem={renderBranchItem}
+          contentContainerStyle={styles.branchesContainer}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 };
-export default BranchesScreen;
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#f5f5f5",
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#3A3A3A",
+    textAlign: "left",
+    alignSelf: "flex-start",
+  },
   searchFilterCont: {
     flexDirection: "row",
     alignItems: "center",
@@ -102,17 +151,18 @@ const styles = StyleSheet.create({
   inputSearch: {
     flex: 1,
   },
-
-  //Flatlist Styles
-  container: {
-    flex: 1,
+  branchSelectionText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginTop: 16,
   },
+
   pharmacyContainer: {
     paddingHorizontal: 8,
-    paddingVertical: 10,
+    paddingTop: 10,
   },
   pharmacyCard: {
-    height: 220,
     borderRadius: 15,
     backgroundColor: "white",
     padding: 8,
@@ -121,6 +171,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
     elevation: 1,
+    marginBottom: 16,
   },
   image: {
     width: "80%",
@@ -128,7 +179,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginTop: 2,
     marginBottom: 4,
-    alignSelf: "center", // Center the image horizontally
+    alignSelf: "center",
+  },
+  ratingText: {
+    textAlign: "left",
+    color: "#333",
+    fontWeight: "bold",
+    fontSize: 14,
   },
   pharmacyName: {
     textAlign: "center",
@@ -137,22 +194,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingTop: 5,
   },
+  branchName: {
+    textAlign: "center",
+    color: "#3C3C3C",
+    fontWeight: "600",
+    fontSize: 14,
+    paddingTop: 2,
+  },
   viewButton: {
-    backgroundColor: "white",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "center",
-    padding: 10,
-    marginTop: 10,
+    alignItems: "center",
     borderWidth: 1,
     borderColor: "#EC6F56",
     borderRadius: 15,
+    backgroundColor: "white",
+    padding: 10,
+    paddingHorizontal: 16,
     alignSelf: "center",
+    marginTop: 10,
   },
   viewButtonText: {
     color: "#EC6F56",
-    fontSize: 11,
     fontWeight: "500",
-    marginRight: 3,
+    fontSize: 13,
   },
 });
+
+export default BranchesScreen;

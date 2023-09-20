@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, TouchableOpacity, Text, Image } from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -32,7 +32,28 @@ import { TailwindProvider } from "tailwindcss-react-native";
 import { Iconify } from "react-native-iconify";
 
 const { tertiary, white, red, bodyGray } = Colors;
-
+const styles = StyleSheet.create({
+  saveButton: {
+    backgroundColor: "black",
+    color: "white",
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 20,
+    fontWeight: 600,
+    fontSize: 14,
+    marginRight: 20,
+  },
+  headerTITLE: {
+    marginLeft: -18,
+    marginBottom: 2,
+  },
+  headBG: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+  },
+});
 const Stack = createStackNavigator();
 
 const RootStack = () => {

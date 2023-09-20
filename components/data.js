@@ -1,6 +1,6 @@
 export const filterData = [
   {
-    name: "Three-Sixty Pharmacy",
+    name: "Three Sixty Pharmacy",
     image: require("../assets/img/pharmacies/three-sixty-pharmacy.jpg"),
     id: "0",
   },

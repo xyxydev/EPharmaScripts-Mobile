@@ -8,12 +8,42 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Iconify } from "react-native-iconify";
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../src/api/context";
+import { fetchUserData } from "../database/backend";
+import { getAuthToken } from "../src/api/authToken";
+import { useUserId } from "../src/api/userIDContext";
 
 const MenuScreen = () => {
   const navigation = useNavigation();
   const { signOut } = useContext(AuthContext);
+
+  const [isLoading, setLoading] = useState(true);
+  const userId = useUserId(); // Assuming useUserId() returns a valid user ID
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const authToken = await getAuthToken();
+        const userId = authToken.userId; // Get userId from AsyncStorage
+
+        if (userId) {
+          const userData = await fetchUserData(userId, "users");
+          console.log("userId", userId);
+          if (userData) {
+            setUser(userData);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleOrderScreen = () => {
     // Navigate to my order screen
@@ -63,12 +93,29 @@ const MenuScreen = () => {
 
         <View style={styles.profileCont}>
           <View style={styles.pic_cont}>
-            <Image
-              source={require("../assets/img/cymer.jpg")}
-              className="w-full h-full rounded-full"
-            />
+            {user && user.img ? (
+              <Image
+                source={{ uri: user.img }}
+                className="w-full h-full rounded-full"
+              />
+            ) : (
+              <Image
+                source={require("../assets/img/default-image.jpg")}
+                className="w-full h-full rounded-full"
+              />
+            )}
           </View>
-          <Text style={styles.name}>Xymer I. Serna</Text>
+          {isLoading ? (
+            <Text>Loading...</Text>
+          ) : user ? (
+            <>
+              <Text style={styles.name}>
+                {user.firstName} {user.lastName}
+              </Text>
+            </>
+          ) : (
+            <Text>User data not available</Text>
+          )}
         </View>
 
         <Text style={styles.menuText}>Menu</Text>

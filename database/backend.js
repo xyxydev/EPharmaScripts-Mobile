@@ -1,0 +1,52 @@
+// backend.js
+
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore/lite";
+import { db } from "../firebase/firebase";
+
+export const fetchUserData = async (userId, collectionName) => {
+  try {
+    const userDoc = doc(collection(db, collectionName), userId);
+    const userSnapshot = await getDoc(userDoc);
+    console.log("userId from backend", userDoc);
+    if (userSnapshot.exists()) {
+      return userSnapshot.data();
+    } else {
+      console.log("User not found in Firestore");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return null;
+  }
+};
+
+export const fetchBranchesData = async (
+  branchName,
+  collectionName,
+  fieldName
+) => {
+  try {
+    const q = query(
+      collection(db, collectionName),
+      where(fieldName, "==", branchName)
+    );
+    const querySnapshot = await getDocs(q);
+
+    const branchesData = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return branchesData;
+  } catch (error) {
+    console.error("Error fetching branches:", error);
+    return [];
+  }
+};

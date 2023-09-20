@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 // Create the context
 const UserIdContext = createContext();
@@ -14,13 +14,17 @@ export const useUserId = () => {
 
 // Create the UserIdProvider component
 export const UserIdProvider = ({ children }) => {
-  const [userId, setUserId] = React.useState(null);
+  const [userId, setUserId] = useState(null);
 
-  // You can add functions to set the userId if needed
+  // Function to set the userId
+  const setUserIdValue = (newUserId) => {
+    setUserId(newUserId);
+  };
 
+  // Provide the userId and the setUserId function
   return (
-    <UserIdContext.Provider value={userId}>{children}</UserIdContext.Provider>
+    <UserIdContext.Provider value={{ userId, setUserId: setUserIdValue }}>
+      {children}
+    </UserIdContext.Provider>
   );
 };
-
-export default UserIdContext;

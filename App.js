@@ -5,7 +5,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TailwindProvider } from "tailwindcss-react-native";
 import RootStack from "./navigators/RootStack"; // Your main app stack
 import AuthStack from "./navigators/AuthStack"; // Your authentication stack (Login and Signup)
-import UserIdContext from "./src/api/userIDContext";
+import UserIdContext, { UserIdProvider } from "./src/api/userIDContext"; // Import UserIdProvider
+import { getAuthToken } from "./src/api/authToken";
 
 const App = () => {
   const [userToken, setUserToken] = useState(null);
@@ -14,18 +15,21 @@ const App = () => {
   useEffect(() => {
     // Check if a token is stored in AsyncStorage
     const retrieveToken = async () => {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        setUserToken(token);
+      try {
+        const { token, userId } = await getAuthToken();
 
-        // Retrieve userId from AsyncStorage
-        const storedUserId = await AsyncStorage.getItem("userId");
-
-        if (storedUserId) {
-          setUserId(storedUserId); // Set userId in the component's state
-          console.log("UserID is", storedUserId);
+        if (token && userId) {
+          setUserToken(token);
+          setUserId(userId);
+          // Set the user token in context first
           authContext.signIn(token);
+          // Then set the user ID
+          authContext.setUserId(userId);
+
+          console.log("retrieved token and userid from app.js:", userId);
         }
+      } catch (error) {
+        console.error("Error retrieving data from AsyncStorage:", error);
       }
     };
 
@@ -41,10 +45,15 @@ const App = () => {
       },
       signOut: () => {
         setUserToken(null);
+        setUserId(null);
+        console.log("UserId removed successfully", userId);
         // Clear token from AsyncStorage
         AsyncStorage.removeItem("token").then(() => {
           console.log("Token removed from AsyncStorage");
         });
+      },
+      setUserId: (newUserId) => {
+        setUserId(newUserId);
       },
     }),
     []
@@ -52,13 +61,13 @@ const App = () => {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <UserIdContext.Provider value={userId}>
+      <UserIdProvider value={userId}>
         <TailwindProvider>
           <NavigationContainer>
             {userToken ? <RootStack /> : <AuthStack />}
           </NavigationContainer>
         </TailwindProvider>
-      </UserIdContext.Provider>
+      </UserIdProvider>
     </AuthContext.Provider>
   );
 };

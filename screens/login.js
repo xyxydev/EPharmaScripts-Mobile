@@ -40,39 +40,43 @@ const { orange } = Colors;
 import KeyboardAvoidingWrapper from "./../components/KeyboardAvoidingWrapper";
 
 //firebase
-// import { authentication } from "../firebase/firebase";
-import { auth } from "../firebase/firebase";
+import { authentication } from "../firebase/firebase";
+// import { auth e} from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../src/api/context";
 import { saveAuthToken } from "../src/api/authToken";
-
+import { useUserId } from "../src/api/userIDContext";
 const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [error, setError] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const { signIn } = React.useContext(AuthContext);
-  const [userId, setUserId] = useState("");
+  // const [userId, setUserId] = useState("");
+  const { setUserId } = useUserId();
+  //
   useEffect(() => {
     // Check if there is a currently authenticated user
-    if (auth.currentUser) {
+    if (authentication.currentUser) {
       // Get the user's UID
-      const userUid = auth.currentUser.uid;
-      setUserId(userUid);
+      const userId = authentication.currentUser.uid;
+      setUserId(userId);
     }
   }, []);
+  //
   const SignInUser = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(
-        auth,
+        authentication,
         email,
         password
       );
       const user = userCredential.user;
+      const userId = user.uid;
       const token = await user.getIdToken(); // Get the authentication token
-
-      await saveAuthToken(user.email, token); // Save user's email and token to AsyncStorage
+      await saveAuthToken(user.email, token, userId); // Save user's email and token to AsyncStorage
       signIn(token); // Update the user's token in the context
+      console.log("UserId fetched from login", userId);
     } catch (error) {
       if (error.code === "auth/invalid-email") {
         setError("Invalid Credentials");
@@ -83,7 +87,45 @@ const Login = ({ navigation }) => {
       }
     }
   };
+  // const SignInUser = async () => {
+  //   try {
+  //     const userCredential = await signInWithEmailAndPassword(
+  //       authentication,
+  //       email,
+  //       password
+  //     );
+  //     const user = userCredential.user;
+  //     const token = await user.getIdToken();
 
+  //     // Fetch the userId from Firebase
+  //     const userUid = user.uid;
+
+  //     // Set the userId within your UserIdProvider
+  //     setUserId(userUid);
+
+  //     await saveAuthToken(user.email, token);
+  //     signIn(token);
+  //   } catch (error) {
+  //     if (error.code === "auth/invalid-email") {
+  //       setError("Invalid Credentials");
+  //     } else {
+  //       setError("Invalid Credentials");
+  //       console.log("Error signing in:", error);
+  //     }
+  //   }
+  // };
+  // State variable for error message
+  useEffect(() => {
+    let timeoutId;
+    if (error) {
+      // Set a timeout to clear the error message after 3 seconds
+      timeoutId = setTimeout(() => {
+        setError(null);
+      }, 4000);
+    }
+    // Clear the timeout when the component unmounts or the error state changes
+    return () => clearTimeout(timeoutId);
+  }, [error]);
   return (
     <KeyboardAvoidingWrapper>
       <StyledContainer>
