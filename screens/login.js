@@ -66,6 +66,17 @@ const Login = ({ navigation }) => {
   //
   const SignInUser = async () => {
     try {
+      // Check if the user exists in the "users" collection
+      const usersCollectionRef = collection(db, "users");
+      const usersQuery = query(usersCollectionRef, where("email", "==", email));
+      const userQuerySnapshot = await getDocs(usersQuery);
+
+      if (userQuerySnapshot.empty) {
+        setError("User not found");
+        return;
+      }
+
+      // If the user exists, attempt to sign in
       const userCredential = await signInWithEmailAndPassword(
         authentication,
         email,
@@ -82,39 +93,11 @@ const Login = ({ navigation }) => {
         setError("Invalid Credentials");
       } else {
         setError("Invalid Credentials");
-        // console.error("Error signing in:", error);
         console.log("Error signing in:", error);
       }
     }
   };
-  // const SignInUser = async () => {
-  //   try {
-  //     const userCredential = await signInWithEmailAndPassword(
-  //       authentication,
-  //       email,
-  //       password
-  //     );
-  //     const user = userCredential.user;
-  //     const token = await user.getIdToken();
 
-  //     // Fetch the userId from Firebase
-  //     const userUid = user.uid;
-
-  //     // Set the userId within your UserIdProvider
-  //     setUserId(userUid);
-
-  //     await saveAuthToken(user.email, token);
-  //     signIn(token);
-  //   } catch (error) {
-  //     if (error.code === "auth/invalid-email") {
-  //       setError("Invalid Credentials");
-  //     } else {
-  //       setError("Invalid Credentials");
-  //       console.log("Error signing in:", error);
-  //     }
-  //   }
-  // };
-  // State variable for error message
   useEffect(() => {
     let timeoutId;
     if (error) {

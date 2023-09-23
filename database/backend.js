@@ -28,14 +28,14 @@ export const fetchUserData = async (userId, collectionName) => {
 };
 
 export const fetchBranchesData = async (
-  branchName,
+  passedData,
   collectionName,
   fieldName
 ) => {
   try {
     const q = query(
       collection(db, collectionName),
-      where(fieldName, "==", branchName)
+      where(fieldName, "==", passedData)
     );
     const querySnapshot = await getDocs(q);
 

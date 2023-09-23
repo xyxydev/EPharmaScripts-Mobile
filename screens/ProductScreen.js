@@ -28,7 +28,7 @@ const ProductScreen = ({ navigation, route }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        console.log(sellerId);
+        // console.log(sellerId);
         const productData = await fetchBranchesData(
           sellerId,
           "products",

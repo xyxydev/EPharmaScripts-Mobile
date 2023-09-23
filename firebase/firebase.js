@@ -2,8 +2,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
-import * as firebase from "firebase/app";
-// // import { getFirestore } from "firebase/firestore/lite";
 // import {
 //   getFirestore,
 //   collection,

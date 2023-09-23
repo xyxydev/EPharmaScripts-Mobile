@@ -1,5 +1,3 @@
-// authToken.js
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Save the user's email and authentication token to AsyncStorage
