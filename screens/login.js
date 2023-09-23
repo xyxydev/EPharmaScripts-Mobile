@@ -46,6 +46,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { AuthContext } from "../src/api/context";
 import { saveAuthToken } from "../src/api/authToken";
 import { useUserId } from "../src/api/userIDContext";
+import { checkUserExists } from "../database/verifyEmail";
+
 const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [error, setError] = useState(null);
@@ -61,18 +63,16 @@ const Login = ({ navigation }) => {
       // Get the user's UID
       const userId = authentication.currentUser.uid;
       setUserId(userId);
+      console.log(userId);
     }
   }, []);
   //
   const SignInUser = async () => {
     try {
-      // Check if the user exists in the "users" collection
-      const usersCollectionRef = collection(db, "users");
-      const usersQuery = query(usersCollectionRef, where("email", "==", email));
-      const userQuerySnapshot = await getDocs(usersQuery);
+      const userExists = await checkUserExists(email);
 
-      if (userQuerySnapshot.empty) {
-        setError("User not found");
+      if (!userExists) {
+        setError("Invalid Credentials");
         return;
       }
 
