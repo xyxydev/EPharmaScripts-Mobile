@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignSelf: 'center',
         marginTop: 10,
+        marginBottom: 25
     },
     maintenanceText:{
         fontSize: 13,

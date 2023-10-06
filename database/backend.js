@@ -1,13 +1,11 @@
 // backend.js
-
-import {
+import { 
   doc,
   getDoc,
   collection,
   query,
   where,
-  getDocs,
-} from "firebase/firestore/lite";
+  getDocs, } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
 export const fetchUserData = async (userId, collectionName) => {
