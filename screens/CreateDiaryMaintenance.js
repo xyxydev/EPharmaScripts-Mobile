@@ -7,7 +7,7 @@ import { db } from "../firebase/firebase";
 import { getAuthToken } from "../src/api/authToken";
 import { useNavigation } from "@react-navigation/native";
 
-const AddDiaryMaintenanceScreen = () => {
+const CreateDiaryMaintenance = () => {
   const navigation = useNavigation();
 
   const [userId, setUserId] = useState(null); // State to store the user ID
@@ -48,6 +48,7 @@ const AddDiaryMaintenanceScreen = () => {
     }
     setSelectedDays(updatedDays);
   };
+  
 
   //
   const handleDateTimeChange = (event, selectedDate) => {
@@ -85,6 +86,38 @@ const AddDiaryMaintenanceScreen = () => {
   const [alarmName, setAlarmName] = useState('');
   const [alarmDescription, setAlarmDescription] = useState('');
   const [medicineStock, setMedicineStock] = useState('');
+
+  //HANDLE TEXTINPUTS-------------------------------------
+  const handleMedicineStockChange = (inputText) => {
+    const numericInput = inputText.replace(/[^0-9]/g, '');
+    if (numericInput.length <= 5) {
+      setMedicineStock(numericInput);
+    }
+  };
+
+  const handleAlarmNameChange = (inputText) => {
+    if (inputText.length <= 50) {
+      const capitalizedInput = inputText.charAt(0).toUpperCase() + inputText.slice(1);
+      setAlarmName(capitalizedInput);
+    }
+  };
+
+  const handleAlarmDescriptionChange = (inputText) => {
+    if (inputText.length <= 100) {
+      const capitalizedInput = inputText.charAt(0).toUpperCase() + inputText.slice(1);
+      setAlarmDescription(capitalizedInput);
+    }
+  };
+
+  const handleAddButtonPress = () => {
+    if (alarmName && alarmDescription && medicineStock) {
+      create(); 
+    } else {
+      ToastAndroid.show('All fields are required.', ToastAndroid.LONG); 
+    }
+  };
+
+
   
   //clear input fields
   const clearInputFields = () => {
@@ -124,7 +157,7 @@ const AddDiaryMaintenanceScreen = () => {
         await addDoc(collection(db, "diaryAlarms"), {
           alarmTime: Timestamp.fromDate(alarm),
           diaryMaintenanceId: docRef.id, // Reference to the diaryMaintenance document
-          switchState: false, // Default switch state to false
+          switchState: true, // Default switch state to true
         });
       }
   
@@ -148,125 +181,149 @@ const AddDiaryMaintenanceScreen = () => {
  
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.screenTitle}>New maintenance & Stock</Text>
-      <View style={styles.diaryContainer}>
-        <View style={styles.mainteNameView}>
-          <Text style={styles.mainteNameText}>Maintenance name : </Text>
-          <View style={styles.mainteInputView}>
-            <TextInput style={styles.placeholderStyle} placeholder="Alarm name..."
-              value={alarmName}
-              onChangeText={(alarmName) => {setAlarmName(alarmName)}}
-            />
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <Text style={styles.screenTitle}>New maintenance & stock</Text>
+        <View style={styles.diaryContainer}>
+          <View style={styles.mainteNameView}>
+            <Text style={styles.mainteNameText}>Maintenance name : </Text>
+            <View style={styles.mainteInputView}>
+              <TextInput 
+                style={styles.placeholderStyle} 
+                placeholder="Alarm name..."
+                value={alarmName}
+                onChangeText={handleAlarmNameChange}
+                maxLength={50}
+                autoCapitalize="sentences" 
+              />
+            </View>
           </View>
-        </View>
 
-        <View style={styles.descriptionView}>
-          <Text style={styles.descriptionText}>Description :</Text>
-          <View style={styles.descriptionInputView}>
-            <TextInput style={styles.placeholderStyle} placeholder="Alarm description..." 
-              value={alarmDescription}
-              onChangeText={(alarmDescription) => {setAlarmDescription(alarmDescription)}}
-            />
+          <View style={styles.descriptionView}>
+            <Text style={styles.descriptionText}>Description :</Text>
+            <View style={styles.descriptionInputView}>
+              <TextInput 
+                style={styles.placeholderStyle} 
+                placeholder="Alarm description..." 
+                value={alarmDescription}
+                onChangeText={handleAlarmDescriptionChange}
+                maxLength={100} 
+                autoCapitalize="sentences" 
+              />
+            </View>
           </View>
-        </View>
 
-        <View style={styles.setAlarmNoteView}>
-          <View style={styles.setAlarmView}>
-            <Text
-              style={styles.setAlarmText}
-              onPress={() => {
-                handleSetAlarmTime();
-                setShowSelectedAlarm(true);
-              }}
-            >
-              Set alarm
+          <View style={styles.setAlarmNoteView}>
+            <View style={styles.setAlarmView}>
+              <Text
+                style={styles.setAlarmText}
+                onPress={() => {
+                  handleSetAlarmTime();
+                  setShowSelectedAlarm(true);
+                }}
+              >
+                Set alarm
+              </Text>
+            </View>
+            <Text style={styles.alarmNoteText}>
+              Press this set button to set alarms
             </Text>
           </View>
-          <Text style={styles.alarmNoteText}>
-            Press this set button to set alarms
-          </Text>
-        </View>
 
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={new Date()} // Initialize with the current date
-            mode="time" // Set the mode to "time"
-            is24Hour={true}
-            display="default"
-            onChange={handleDateTimeChange}
-          />
-        )}
-
-        <View style={styles.alarmsView}>
-          <Text style={styles.alarmsText}>Alarms</Text>
-          {alarmTimes.length === 0 ? (
-            <Text style={styles.noAlarmsText}>No alarms yet</Text>
-          ) : (
-            <View>
-              {alarmTimes.map((alarm, index) => (
-                <View key={index} style={styles.alarmContainer}>
-                  <Text style={styles.alarmTimeText}>
-                    {alarm.getHours()}:{String(alarm.getMinutes()).padStart(2, '0')} {alarm.getHours() >= 12 ? 'PM' : 'AM'}
-                  </Text>
-                  <TouchableOpacity style={styles.deleteIcon}
-                    onPress={() => handleDeleteAlarm(index)}
-                  >
-                    <Iconify icon="ic:outline-delete" size={30} color="#DC3642" />
-                  </TouchableOpacity>
-                </View>
-
-              ))}
-            </View>
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={new Date()} // Initialize with the current date
+              mode="time" // Set the mode to "time"
+              is24Hour={true}
+              display="default"
+              onChange={handleDateTimeChange}
+            />
           )}
-        </View>
 
-        <View style={styles.scheduleContainer}>
-            <Text style={styles.scheduleText}>Schedules</Text>
-            <Text style={styles.repetitionText}>{getRepetitionText()}</Text>
-            <View style={styles.daysOfWeek}>
-              {daysOfWeek.map((day, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.dayButton,
-                    selectedDays.includes(day) && styles.selectedDay,
-                  ]}
-                  onPress={() => handleDaySelect(day)}
-                >
-                  <Text style={[styles.dayText, selectedDays.includes(day) && styles.selectedDayText]}>{day}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-        </View>
+          <View style={styles.alarmsView}>
+            <Text style={styles.alarmsText}>Alarms</Text>
+            {alarmTimes.length === 0 ? (
+              <Text style={styles.noAlarmsText}>No alarms yet</Text>
+            ) : (
+              <View>
+                {alarmTimes.map((alarm, index) => (
+                  <View key={index} style={styles.alarmContainer}>
+                    <Text style={styles.alarmTimeText}>
+                      {alarm.getHours()}:{String(alarm.getMinutes()).padStart(2, '0')} {alarm.getHours() >= 12 ? 'PM' : 'AM'}
+                    </Text>
+                    <TouchableOpacity style={styles.deleteIcon}
+                      onPress={() => handleDeleteAlarm(index)}
+                    >
+                      <Iconify icon="ic:outline-delete" size={30} color="#DC3642" />
+                    </TouchableOpacity>
+                  </View>
+
+                ))}
+              </View>
+            )}
+          </View>
+
+          <View style={styles.scheduleContainer}>
+              <Text style={styles.scheduleText}>Schedules</Text>
+              <Text style={styles.repetitionText}>{getRepetitionText()}</Text>
+              <View style={styles.daysOfWeek}>
+                {daysOfWeek.map((day, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.dayButton,
+                      selectedDays.includes(day) && styles.selectedDay,
+                    ]}
+                    onPress={() => handleDaySelect(day)}
+                  >
+                    <Text style={[styles.dayText, selectedDays.includes(day) && styles.selectedDayText]}>{day}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+          </View>
 
 
-        <View style={styles.stockView}>
-          <View style={styles.medStockView}>
-            <Text style={styles.medStockText}>Medicine stock :</Text>
-            <View style={styles.stockInputView}>
-               <TextInput style={styles.stockPlaceholderStyle} placeholder="0" 
-                value={medicineStock}
-                onChangeText={(medicineStock) => {setMedicineStock(medicineStock)}}
-               />
+          <View style={styles.stockView}>
+            <View style={styles.medStockView}>
+              <Text style={styles.medStockText}>Medicine stock :</Text>
+              <View style={styles.stockInputView}>
+                <TextInput 
+                  style={styles.stockPlaceholderStyle} 
+                  placeholder="0" 
+                  value={medicineStock}
+                  onChangeText={handleMedicineStockChange}
+                  keyboardType="numeric"
+                />
+              </View>
             </View>
           </View>
         </View>
-
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={create}
-        >
-          <Text style={styles.addText}>ADD</Text>
-        </TouchableOpacity>
-      </View>
-
-    </ScrollView>
+      </ScrollView>
+      <TouchableOpacity
+        style={[
+          styles.addButton,
+          { backgroundColor: alarmName && 
+            alarmDescription && 
+            medicineStock && 
+            selectedAlarmTime 
+            && selectedDays.length > 0 ? '#EC6F56' : 'rgba(236, 111, 86, 0.3)' },
+        ]}
+        onPress={handleAddButtonPress}
+        disabled={
+          !alarmName || 
+          !alarmDescription || 
+          !medicineStock ||
+          !selectedAlarmTime ||
+          selectedDays.length === 0 }
+      >
+        <Text style={styles.addText}>ADD</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
-export default AddDiaryMaintenanceScreen;
+export default CreateDiaryMaintenance;
 
 const styles = StyleSheet.create({
   container:{

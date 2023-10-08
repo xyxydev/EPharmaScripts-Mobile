@@ -7,7 +7,7 @@ import DiarySwitchTabs from "../components/DiarySwitchTabs";
 import { LoadingComponent, useIsDeleting } from "../components/DeleteLoading";
 import { useNavigation } from "@react-navigation/native";
 import { db } from "../firebase/firebase";
-import { collection, deleteDoc, query, where, onSnapshot, doc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, query, where, onSnapshot, doc, getDocs, updateDoc, getDoc } from "firebase/firestore";
 import { getAuthToken } from "../src/api/authToken";
 import Modal from "react-native-modal";
 
@@ -22,10 +22,19 @@ const DiaryMaintenanceScreen = () => {
   const [isXButtonVisible, setIsXButtonVisible] = useState(true); // State to track whether X button should be visible
   const { isDeleting, startDeleting, stopDeleting } = useIsDeleting(); 
   const [checkAlarmInterval, setCheckAlarmInterval] = useState(null);
+
  
-  const handleAddDiaryMaintenance = () => {
-    navigation.navigate("AddDiaryMaintenance");
+  const handleCreateDiaryMaintenance = () => {
+    navigation.navigate("CreateDiaryMaintenance");
   };
+
+  const handleUpdateDiaryMaintenance = (diaryMaintenanceId) => {
+    navigation.navigate("UpdateDiaryMaintenance", {
+      userID: userId, 
+      diaryID: diaryMaintenanceId, 
+    });
+  };
+  
 
   const onSelectSwitch = (value) => {
     setTrackerTab(value);
@@ -65,6 +74,15 @@ const DiaryMaintenanceScreen = () => {
         >
           <Iconify icon="ic:outline-close" size={16} color="white" />
           
+        </TouchableOpacity>
+      );
+    }else{
+      return (
+        <TouchableOpacity
+          style={styles.xButton}
+          onPress={() => handleUpdateDiaryMaintenance(diaryMaintenanceId)}
+        >
+          <Iconify icon="ri:pencil-fill" size={16} color="white" />
         </TouchableOpacity>
       );
     }
@@ -209,21 +227,18 @@ const DiaryMaintenanceScreen = () => {
   
   
 
-  //
-  const handleSwitchToggle = async (alarmId) => {
+  //Change the switchState field status based on the on/off button
+  const handleSwitchToggleAndCheckAlarm = async (alarmId) => {
     // Find the alarm object that matches the alarmId
     const alarmToUpdate = diaryAlarmsData.find((item) => item.id === alarmId);
-  
+
     if (alarmToUpdate) {
       try {
-        // Log the current switch state before toggling
-        //console.log(`Switch state of Alarm ${alarmId} before toggle: ${alarmToUpdate.switchState}`);
-  
+        const newSwitchState = !alarmToUpdate.switchState;
+
         // Update the switchState in the local state
         const updatedDiaryAlarmsData = diaryAlarmsData.map((item) => {
           if (item.id === alarmId) {
-            const newSwitchState = !item.switchState;
-            //console.log(`Switch state of Alarm ${alarmId} changed to ${newSwitchState}`);
             return {
               ...item,
               switchState: newSwitchState,
@@ -231,80 +246,78 @@ const DiaryMaintenanceScreen = () => {
           }
           return item;
         });
-  
-        setDiaryAlarmsData((prevState) =>
-          prevState.map((item) =>
-            item.id === alarmId ? { ...item, switchState: !item.switchState } : item
-          )
-        );
 
-  
+        setDiaryAlarmsData(updatedDiaryAlarmsData);
+
         // Update the switchState in Firestore
         const alarmDocRef = doc(db, "diaryAlarms", alarmId);
-        await updateDoc(alarmDocRef, { switchState: !alarmToUpdate.switchState });
-  
-        // Log the updated switch state after toggling
-        //console.log(`Switch state of Alarm ${alarmId} after toggle: ${!alarmToUpdate.switchState}`);
-  
+        await updateDoc(alarmDocRef, {
+          switchState: newSwitchState,
+        });
+        console.log("set new switchState", newSwitchState);
+        // Check the alarm immediately after toggling the switch
+        checkAlarm(alarmId, newSwitchState);
       } catch (error) {
         console.error("Error updating alarm switch state:", error);
       }
     }
-  
-    // If the alarm is turned off, clear its interval (if it exists)
-    if (!alarmToUpdate.switchState) {
-      clearInterval(alarmIntervals[alarmId]);
-      //console.log(`Interval for Alarm ${alarmId} cleared`);
+  };
+
+  const checkAlarm = async (alarmId, initialSwitchState) => {
+    let switchState = initialSwitchState;
+    console.log("Condition switchState", switchState);
+
+    while (switchState) {
+      const currentTimeInPH = new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Manila",
+      });
+
+      const alarm = diaryAlarmsData.find((item) => item.id === alarmId);
+
+      if (alarm && switchState === true && alarm.alarmTime?.seconds) {
+        const alarmTime = new Date(alarm.alarmTime.seconds * 1000);
+        const alarmTimeInPH = alarmTime.toLocaleString("en-US", {
+          timeZone: "Asia/Manila",
+        });
+
+        if (alarmTimeInPH === currentTimeInPH) {
+          alert("ORAS NA!");
+        } else {
+          // console.log("No alarms yet");
+        }
+
+        // Fetch the latest switchState from Firestore
+        const alarmDocRef = doc(db, "diaryAlarms", alarmId);
+        // console.log("id", alarmId);
+        // console.log("Alarm time ", alarmTime);
+        // console.log("Alarm time in PH ", alarmTime);
+        // console.log("SwitchState", switchState);
+
+        const alarmDocSnap = await getDoc(alarmDocRef);
+        const updatedSwitchState = alarmDocSnap.data().switchState;
+        switchState = updatedSwitchState;
+
+        // Wait for a while before checking again (adjust the interval as needed)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      } else {
+        // Stop further execution when switchState is false or alarm data is missing
+        break;
+      }
     }
   };
-  
-  
-  const startCheckingAlarm = (alarmId) => {
-    const intervalId = setInterval(() => {
-      const currentTimeInPH = new Date().toLocaleString("en-US", { timeZone: "Asia/Manila" });
-  
-      const alarm = diaryAlarmsData.find((item) => item.id === alarmId);
-  
-      if (alarm) {
-        // Log the current switch state before checking
-        //console.log(`Switch state of Alarm ${alarmId} before check: ${alarm.switchState}`);
 
-        // Log the current time
-        console.log(`Current Time: ${currentTimeInPH}`);
-  
-        if (alarm.switchState === true && alarm.alarmTime?.seconds) {
-          const alarmTime = new Date(alarm.alarmTime.seconds * 1000);
-          const alarmTimeInPH = alarmTime.toLocaleString("en-US", { timeZone: "Asia/Manila" });
+  // Usage:
+  // Call handleSwitchToggleAndCheckAlarm to start the process
+  // Example: handleSwitchToggleAndCheckAlarm(alarmId);
 
-          // Log the alarm time
-        console.log(`Alarm Time for Alarm ${alarmId}: ${alarmTimeInPH}`);
-  
-          if (alarmTimeInPH === currentTimeInPH) {
-            alert("ORAS NA!");
-          } else {
-            //console.log("No alarms yet");
-          }
-        }
-  
-        // Log the switch state after checking
-        //console.log(`Switch state of Alarm ${alarmId} after check: ${alarm.switchState}`);
-      }
-    }, 1000);
-  
-    // Store the interval ID in the alarmIntervals object
-    alarmIntervals[alarmId] = intervalId;
-    //console.log(`Interval for Alarm ${alarmId} started`);
-  };
-  
-  
   // Initialize an object to store interval IDs for each alarm
   const alarmIntervals = {};
-  
+
   // Call the function to start checking for each alarm when the component mounts
   useEffect(() => {
     diaryAlarmsData.forEach((alarm) => {
       if (alarm.switchState) {
-        startCheckingAlarm(alarm.id);
+        checkAlarm(alarm.id);
       }
     });
   }, [diaryAlarmsData]);
@@ -341,9 +354,9 @@ const DiaryMaintenanceScreen = () => {
               <View style={styles.switchContainer}>
                 <Switch
                   value={item.switchState}
-                  onValueChange={() => handleSwitchToggle(item.id)}
-                  trackColor={{ true: '#EC6F56', false: 'gray' }}
-                  thumbColor={item.switchState ? 'white' : '#8E8E8E'} // Use different colors based on switch state
+                  onValueChange={() => handleSwitchToggleAndCheckAlarm(item.id)}
+                  trackColor={{ true: "#EC6F56", false: "gray" }}
+                  thumbColor={item.switchState ? "white" : "#8E8E8E"} // Use different colors based on switch state
                   style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
                 />
               </View>
@@ -443,7 +456,7 @@ const DiaryMaintenanceScreen = () => {
         }
       </ScrollView>
 
-      <TouchableOpacity style={styles.addButton} onPress={handleAddDiaryMaintenance}>
+      <TouchableOpacity style={styles.addButton} onPress={handleCreateDiaryMaintenance}>
         <Iconify icon="ic:outline-add" size={30} color="white" />
       </TouchableOpacity>
 
@@ -615,7 +628,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     backgroundColor: '#EC6F56',
     borderRadius: 50,
-    padding: 3
+    padding: 5
   },
   //MODAL
   modalTitle:{
